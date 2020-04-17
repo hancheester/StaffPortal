@@ -66,7 +66,7 @@
                     notify({
                         message: "Employee deleted successfully.",
                         duration: -1,
-                        position: "right",
+                        position: "center",
                         classes: "alert-success"
                     });
                     vm.employees.splice(index, 1);
@@ -75,7 +75,7 @@
                     notify({
                         message: "Sorry, there is an error. Please contact administrator.",
                         duration: -1,
-                        position: "right",
+                        position: "center",
                         classes: "alert-danger"
                     });
                 });
