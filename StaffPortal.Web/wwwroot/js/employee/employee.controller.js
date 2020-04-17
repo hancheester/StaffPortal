@@ -85,6 +85,7 @@
             let data = {
                 firstName: vm.employee.firstName,
                 lastName: vm.employee.lastName,
+                phoneNumber: vm.employee.phoneNumber,
                 gender: vm.employee.gender,
                 email: vm.employee.email,
                 userName: vm.employee.userName,
@@ -131,7 +132,7 @@
                 }, function (err) {
                     console.error(err);
                     notify({
-                        message: "Sorry, there is an error. Please contact administrator. " + err.data.message,
+                        message: "Sorry, there is an error. Please contact administrator. " + err.data.value.message,
                         duration: -1,
                         position: "right",
                         classes: "alert-danger"
