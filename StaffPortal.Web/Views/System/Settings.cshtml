@@ -1,0 +1,341 @@
+﻿@{
+    ViewData["Title"] = "Settings";
+}
+
+@section Scripts {
+    <script src="~/js/system/settings.controller.js" asp-append-version="true"></script>
+    <script src="~/js/components/month-list.directive.js" asp-append-version="true"></script>
+
+    <script>
+        $('#myTab a').click(function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+    </script>
+}
+
+<div ng-app="app" ng-controller="SettingsController as vm">
+    <h1>Settings</h1>
+    <ul class="nav nav-tabs" id="myTab">
+        <li class="nav-item active">
+            <a class="nav-link active" href="#company">Company</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#leave">Leave</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#email">Email</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane fade active in" id="company" role="tabpanel">
+            
+            <div class="space30"></div>
+
+            <form class="form-horizontal" id="companyForm" name="companyForm" novalidate role="form">
+
+                <div class="form-group" ng-cloak>
+                    <label class="control-label col-md-3">Company Name *</label>
+                    <div class="col-md-6">
+                        <input class="form-control" id="companyName" name="companyName" placeholder="Company Name" ng-model="vm.company.companyName" required />
+                        <p class="text-danger" ng-show="companyForm.companyName.$error.required" ng-cloak>Required</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-cloak>
+                    <label class="control-label col-md-3">Logo</label>
+                    <div class="col-md-6">
+
+                        <img ng-show="companyForm.file.$valid" ngf-thumbnail="vm.logo" class="thumb">
+                        <img ng-show="!vm.logo" ng-src="{{vm.company.logoPath}}" class="thumb" ng-cloak>
+
+                        <div class="space30"></div>
+
+                        <input type="file"
+                               name="file"
+                               accept="image/*"
+                               ng-model="vm.logo"
+                               ngf-select
+                               ngf-max-size="4MB"
+                               ngf-model-invalid="errorFile">
+
+                        <div class="space30"></div>
+
+                        <button class="btn btn-default" ng-click="vm.logo = null" ng-show="vm.logo">Remove</button>
+
+                        <p class="text-danger" ng-show="companyForm.file.$error.maxSize">
+                            File too large, {{errorFile.size / 1000000|number:1}}MB: max 4MB
+                        </p>
+
+                        <div class="space30"></div>
+
+                        <div ng-show="vm.logo.progress >= 0" class="progress">
+                            <div class="progress-bar"
+                                 role="progressbar"
+                                 aria-valuenow="{{vm.logo.progress}}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="100"
+                                 style="width: {{vm.logo.progress}}%;">
+                                {{vm.logo.progress}}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-cloak>
+                    <label class="control-label col-md-3">Contact Number *</label>
+                    <div class="col-md-6">
+                        <input class="form-control" id="contactNumber" name="contactNumber" placeholder="Contact Number" ng-model="vm.company.contactNumber" required />
+                        <p class="text-danger" ng-show="companyForm.contactNumber.$error.required" ng-cloak>Required</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-cloak>
+                    <label class="control-label col-md-3">Financial Year *</label>
+                    <div class="col-md-9">
+                        <div class="row" ng-cloak>
+                            <label class="control-label col-md-2">From:</label>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="financialYearStart" id="financialYearStart" uib-datepicker-popup="dd-MM"
+                                           ng-model="vm.company.financialYearStart" is-open="vm.isCompanyYearOpen" required />
+                                    <span class="input-group-btn">
+                                        <button type="button"
+                                                class="btn btn-default"
+                                                ng-click="vm.isCompanyYearOpen = !vm.isCompanyYearOpen">
+                                            <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                                <p class="text-danger" ng-show="companyForm.financialYearStart.$error.required" ng-cloak>Required</p>
+                            </div>
+                        </div>
+                        <div class="row" ng-cloak>
+                            <label class="control-label col-md-2">To:</label>
+                            <div class="col-md-4">
+                                <h5>{{vm.company.financialYearEnd.getDate()}}-{{vm.company.financialYearEnd.getMonth() + 1}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-right">
+                    <button class="btn btn-info" ng-disabled="companyForm.$invalid || vm.isBusyUpdatingCompany" ng-click="vm.updateCompany()">
+                        {{ vm.isBusyUpdatingCompany ? "Updating..." : "Update" }}
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+        <div class="tab-pane fade" id="leave" role="tabpanel">
+            <div class="space30"></div>
+
+            <form class="form-horizontal" name="leaveForm" novalidate role="form">
+
+                <div class="form-group">
+                    <label for="leavesToNewYear" class="control-label col-md-3">Allow leaves to be carried forward to a new financial year?</label>
+                    <div class="col-md-6">
+                        <h4>
+                            <input type="checkbox" ng-model="vm.leave.leavesToNewYear" name="leavesToNewYear" id="leavesToNewYear">
+                        </h4>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">Please select months to only accrue additional holiday as paid.</label>
+                    <div class="col-md-6">
+                        <month-list months="vm.leave.monthsToAccrue"></month-list>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="leaveNoticePeriod">How many days in advance to allow for applying leave request?</label>
+                    <div class="col-md-2">
+                        <input class="form-control" id="leaveNoticePeriod" name="leaveNoticePeriod" ng-model="vm.leave.leaveNoticePeriod" type="number" min="0" required />
+                        <p class="text-danger" ng-show="leaveForm.leaveNoticePeriod.$error.required" ng-cloak>Required</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3" for="emergencyAllowance">How many days in future to allow for emergency leave request?</label>
+                    <div class="col-md-2">
+                        <input class="form-control" id="emergencyAllowance" name="emergencyAllowance" ng-model="vm.leave.emergencyAllowance" type="number" min="0" required />
+                        <p class="text-danger" ng-show="leaveForm.emergencyAllowance.$error.required" ng-cloak>Required</p>
+                    </div>
+                </div>
+
+                <div class="text-right">
+                    <button class="btn btn-info" ng-disabled="leaveForm.$invalid || vm.isBusyUpdatingLeave" ng-click="vm.updateLeave()">
+                        {{ vm.isBusyUpdatingLeave ? "Updating..." : "Update" }}
+                    </button>
+                </div>
+            </form>
+
+            <fieldset>
+                <legend>Leave Types</legend>
+                <div class="col-md-7 col-md-offset-3 col-xs-12 col-xs-offset-0">
+                    <table class="table table-responsive table-striped">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Requestable</th>
+                                <th>Payable</th>
+                                <th>Accruable</th>
+                                <th>Impact On Allowance?</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="leaveType in vm.leaveTypes">
+                                <td>
+                                    <p>{{leaveType.name}}</p>
+                                </td>
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" ng-model="leaveType.requestable" />
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" ng-model="leaveType.payable" />
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" ng-model="leaveType.accruable" ng-click="vm.checkImpactOnAllowance(leaveType)" />
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" ng-model="leaveType.impactOnAllowance" ng-disabled="leaveType.accruable" />
+                                        </label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a ng-hide="leaveType.isLocked" class="btn btn-default" ng-click="vm.deleteLeaveType($index)">Delete</a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+                            
+            <div class="col-md-7 col-md-offset-3 col-xs-12 col-xs-offset-0">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        New Leave Type
+                    </div>
+                    <div class="panel-body">
+
+                        <form class="form-horizontal" name="newLeaveTypeForm" novalidate role="form">
+                            <div class="form-group" ng-cloak>
+                                <label class="control-label col-md-4">Leave Type *</label>
+                                <div class="col-md-6">
+                                    <input class="form-control" id="newLeaveTypeName" name="newLeaveTypeName" placeholder="Leave type name" ng-model="vm.leaveType.name" required />
+                                    <p class="text-danger" ng-show="newLeaveTypeForm.newLeaveTypeName.$error.required && (newLeaveTypeForm.newLeaveTypeName.$dirty || newLeaveTypeForm.newLeaveTypeName.$touched)" ng-cloak>Required</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label class="col-md-offset-4">
+                                        <input type="checkbox" ng-model="vm.leaveType.requestable" />
+                                        Requestable
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label class="col-md-offset-4">
+                                        <input type="checkbox" ng-model="vm.leaveType.payable" />
+                                        Payable
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label class="col-md-offset-4">
+                                        <input type="checkbox" ng-model="vm.leaveType.accruable" ng-click="vm.checkImpactOnAllowance(vm.leaveType)" />
+                                        Accruable
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label class="col-md-offset-4" uib-popover="'Impact On Allowance?' is checked by default as long as Accruable is also checked!" popover-enable="newLeaveType.accruable" popover-class="alert-warning">
+                                        <input type="checkbox" ng-model="vm.leaveType.impactOnAllowance" ng-disabled="vm.leaveType.accruable" />
+                                        Impact On Allowance
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-footer text-right">
+                        <button class="btn btn-info" ng-disabled="newLeaveTypeForm.$invalid || vm.isBusyCreatingLeaveType" ng-click="vm.createLeaveType()">
+                            {{ vm.isBusyCreatingLeaveType ? "Creating..." : "Create" }}
+                        </button>
+                    </div>
+                </div>                    
+            </div>
+        </div>
+
+        <div id="email" class="tab-pane fade">
+            <div class="space30"></div>
+
+            <form class="form-horizontal" id="emailForm" name="emailForm" novalidate role="form">
+
+                <div class="form-group" ng-cloak>
+                    <label class="control-label col-md-3">Host Name *</label>
+                    <div class="col-md-6">
+                        <input class="form-control" id="host" name="host" placeholder="Host Name" ng-model="vm.email.host" required />
+                        <p class="text-danger" ng-show="emailForm.host.$error.required" ng-cloak>Required</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-cloak>
+                    <label class="control-label col-md-3">User Name *</label>
+                    <div class="col-md-6">
+                        <input class="form-control" id="userName" name="userName" placeholder="User Name" ng-model="vm.email.userName" required />
+                        <p class="text-danger" ng-show="emailForm.userName.$error.required" ng-cloak>Required</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-cloak>
+                    <label class="control-label col-md-3">Password *</label>
+                    <div class="col-md-6">
+                        <input class="form-control" id="password" name="password" placeholder="Password" ng-model="vm.email.password" required />
+                        <p class="text-danger" ng-show="emailForm.password.$error.required" ng-cloak>Required</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-cloak>
+                    <label class="control-label col-md-3">Display Email *</label>
+                    <div class="col-md-6">
+                        <input class="form-control" id="displayEmail" name="displayEmail" placeholder="Display Email" ng-model="vm.email.displayEmail" required />
+                        <p class="text-danger" ng-show="emailForm.displayEmail.$error.required" ng-cloak>Required</p>
+                    </div>
+                </div>
+
+                <div class="text-right">
+                    <button class="btn btn-info" ng-disabled="emailForm.$invalid || vm.isBusyUpdatingEmail" ng-click="vm.updateEmail()">
+                        {{ vm.isBusyUpdatingEmail ? "Updating..." : "Update" }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

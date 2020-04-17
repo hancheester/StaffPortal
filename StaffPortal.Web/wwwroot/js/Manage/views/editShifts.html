@@ -1,0 +1,141 @@
+﻿<div class="header">
+    <i class="fa fa-angle-left" ng-click="previous()"></i>
+    <span>{{month.clone().day(1).format("MMMM DD")}} - {{month.clone().day(7).format("MMMM DD")}}</span>
+    <i class="fa fa-angle-right" ng-click="next()"></i>
+</div>
+
+<div class="week hidden-xs">
+    <div class="day">Role</div>
+    <div class="day" ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth }"
+         ng-repeat="day in weeks.days"
+         uib-popover="{{day.day.status}}" popover-trigger="'mouseenter'">
+        {{day.day.name}} {{day.day.number}}
+    </div>
+</div>
+
+<div class="rota bg-overlay color-overlay" ng-class="{ 'is-busy bg-overlay color-overlay' : isBusy }">
+    <wait-cursor ng-show="isBusy"></wait-cursor>
+    <div class="rota-row" ng-repeat="group in data.businessRole_Employees">
+        <div class="business-role">
+            <span>{{group.businessRole.name}}</span>
+            <p class="info">Min Required: {{group.businessRoleMinRequired}}</p>
+        </div>
+        <div class="business-role" ng-class="{'critical': staffLevel.businessRoleStaffLevel < group.businessRoleMinRequired}" ng-repeat="staffLevel in group.staffLevel">
+            <div class="notification" ng-show="staffLevel.businessRoleStaffLevel < group.businessRoleMinRequired && data.openingHours[$index].isOpen" uib-popover="Below Role Min" popover-trigger="'mouseenter'">
+                <div class="triangle"></div>
+            </div>
+            StaffCount:{{staffLevel.businessRoleStaffLevel}} RoleMin:{{group.businessRoleMinRequired}}
+        </div>
+
+        <div class="week" ng-repeat="employee in group.employeesOnShift" ng-show="countDaysAssigned(employee.daysWorking) > 0">
+            <div class="day">
+                {{employee.firstName + ' ' + employee.lastName| limitTo: 12 }}
+                <span ng-show="(employee.firstName + ' ' + employee.lastName).length > 12">...</span>
+                <a class="pull-right pad-r5" data-toggle="modal" data-target="#editWeek" ng-click="editWeek(employee, employee.daysWorking[0])">
+                    <i class="fa fa-pencil edit"></i>
+                </a>
+            </div>
+
+            <div class="day" ng-repeat="day in employee.daysWorking">
+                <div ng-show="day.isOnHoliday" class="notification" uib-popover="{{day.leaveTypeName}}" popover-trigger="'mouseenter'">
+                    <div class="triangle">{{weeks.days[$index].status}}</div>
+                </div>
+                <span class="working-time" ng-show="day.isAssigned && weeks.selectedDepartment.id == day.departmentId">{{day.startTime}} - {{day.endTime}}</span>
+                <a class="pull-right pad-r5" data-toggle="modal" data-target="#editShift" ng-click="editShift(employee, day)">
+                    <i class="fa fa-pencil edit"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- NEW ASSIGNMENT MODAL -->
+<div id="editShift" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create New Assignment</h4>
+            </div>
+            <div class="modal-body">
+                <p>{{selectedEmployee.firstName}}</p>
+                <form class="form-horizontal" name="newAssignmentForm" novalidate role="form">
+                    <div class="form-group" ng-class="{ 'has-error' : newAssignmentForm.businessRole.$error.required && (newAssignmentForm.businessRole.$dirty || newAssignmentForm.businessRole.$touched) }">
+                        <label class="col-sm-5">Secondary Business Role*</label>
+                        <div class="col-sm-7">
+                            <p ng-hide="selectedEmployee.secondaryBusinessRoles.length > 0">Employee has no Secondary Business Roles</p>
+                            <select class="form-control form_control_txt" id="businessRole" name="businessRole" ng-show="selectedEmployee.secondaryBusinessRoles.length > 0"
+                                    ng-model="assignment.businessRole"
+                                    ng-options="businessRole.name for businessRole in selectedEmployee.secondaryBusinessRoles track by businessRole.id"
+                                    required></select>
+                            <p class="text-danger" ng-show="newAssignmentForm.businessRole.$error.required && (newAssignmentForm.businessRole.$dirty || newAssignmentForm.businessRole.$touched)" ng-cloak>Primary Business Role field is required</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="col-sm-5 pad-top35">Starting Time</label>
+                        <div class="col-sm-7" uib-timepicker ng-model="assignment.startTime" ng-change="startTimeChanged()" name="startTime" id="startTime" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian"></div>
+                    </div>
+                    <div>
+                        <label class="col-sm-5 pad-top35">Ending Time</label>
+                        <div class="col-sm-7" uib-timepicker ng-model="assignment.endTime" name="endTime" id="endTime" hour-step="hstep" minute-step="mstep" show-meridian="ismeridian" min="openingHours.openingTime"></div>
+                    </div>
+
+                    <div class="form-group" ng-class="{ 'has-error' : newAssignmentForm.recurringWeeks.$error.required && newAssignmentForm.recurringWeeks.$dirty && newAssignmentForm.recurringWeeks.$untouched }">
+                        <label class="control-label col-sm-3">Recurring weeks *</label>
+                        <div class="col-sm-6">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <input type="number" class="form-control ng-pristine ng-not-empty ng-valid ng-valid-required ng-touched" id="recurringWeeks" name="recurringWeeks" placeholder="weeks" ng-model="assignment.recurringWeeks" required="">
+                            <p class="text-danger ng-hide" ng-show="newAssignmentForm.recurringWeeks.$error.required && newAssignmentForm.recurringWeeks.$dirty && newAssignmentForm.recurringWeeks.$untouched">Recurring Weeks field is required</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="saveAssignment(newAssignmentForm, $element, mode)">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- NEW WEEK ASSIGNMENT MODAL -->
+<div id="editWeek" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Week</h4>
+            </div>
+            <div class="modal-body">
+                <label class="label">Employee Name: </label>
+                <p>{{selectedEmployee.firstName}} {{selectedEmployee.lastName}}</p>
+                <form class="form-horizontal" name="weekAssignmentForm" novalidate role="form">
+                    <div class="form-group" ng-class="{ 'has-error' : weekAssignmentForm.businessRole.$error.required && (weekAssignmentForm.businessRole.$dirty || weekAssignmentForm.businessRole.$touched) }">
+                        <label class="col-sm-5">Secondary Business Role*</label>
+                        <div class="col-sm-7">
+                            <p ng-hide="selectedEmployee.secondaryBusinessRoles.length > 0">Employee has no Secondary Business Roles</p>
+                            <select class="form-control form_control_txt" id="businessRole" name="businessRole" ng-show="selectedEmployee.secondaryBusinessRoles.length > 0"
+                                    ng-model="weekAssignment.businessRole"
+                                    ng-options="businessRole.name for businessRole in selectedEmployee.secondaryBusinessRoles track by businessRole.id"
+                                    required></select>
+                            <p class="text-danger" ng-show="weekAssignmentForm.businessRole.$error.required && (weekAssignmentForm.businessRole.$dirty || weekAssignmentForm.businessRole.$touched)" ng-cloak>Primary Business Role field is required</p>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' : weekAssignmentForm.recurringWeeks.$error.required && weekAssignmentForm.recurringWeeks.$dirty && weekAssignmentForm.recurringWeeks.$untouched }">
+                        <label class="control-label col-sm-3">Recurring weeks *</label>
+                        <div class="col-sm-6">
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <input type="number" class="form-control ng-pristine ng-not-empty ng-valid ng-valid-required ng-touched" id="recurringWeeks" name="recurringWeeks" placeholder="weeks" ng-model="weekAssignment.recurringWeeks" required="">
+                            <p class="text-danger ng-hide" ng-show="weekAssignmentForm.recurringWeeks.$error.required && weekAssignmentForm.recurringWeeks.$dirty && weekAssignmentForm.recurringWeeks.$untouched">Recurring Weeks field is required</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="saveWeek(weekAssignmentForm, businessRole.id, recurringWeeks)">Create</button>
+            </div>
+        </div>
+    </div>
+</div>

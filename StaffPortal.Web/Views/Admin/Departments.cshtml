@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Departments";
+}
+
+@section scripts{
+    <script src="~/lib/ng-file-upload/ng-file-upload-shim.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+    <script src="~/js/Admin/admin-app.js"></script>
+    <script src="~/js/Admin/services/departmentService.js" asp-append-version="true"></script>
+    <script src="~/js/Admin/controllers/departmentsCtrl.js" asp-append-version="true"></script>
+    <script src="~/js/Admin/controllers/editDepartmentCtrl.js" asp-append-version="true"></script>
+    <script src="~/js/Admin/directives/laterThan.js"></script>
+}
+
+@section Styles {
+    <link href="~/lib/angular-notify/angular-notify.css" rel="stylesheet" />
+}
+
+<section ng-app="admin-app" ng-cloak>
+    <div ng-view></div>
+</section>

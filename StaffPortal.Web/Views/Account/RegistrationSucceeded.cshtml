@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "Registration Succeeded";
+    Layout = null;
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link href="~/css/site.css" rel="stylesheet" />
+<link href="~/css/animate.css" rel="stylesheet" />
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HR Pharm - Staff Portal</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <div class="account">
+        <div id="register" class="container">
+            <div class="middle-box text-center loginscreen animated fadeIn">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <img class="img-responsive" src="~/images/Logo.png" />
+                        <hr />
+                        <h3>Thank you for registering on Staff Portal!</h3>
+                        <div class="title-line" style="width: 60%; transform: matrix(1, 0, 0, 1, 0, 0);"></div>
+                        <div class="space30"></div>
+
+
+                        <p class="alert alert-warning" role="alert">
+                            Your account is not yet active, please wait for an Administrator to activate your account
+                            before trying to log in. You will receive a confirmation e-mail as soon .
+                        </p>
+                    </div>
+                    <span><a asp-action="Login"><i class="fa fa-chevron-circle-left"></i> Back to Log in Page</a></span>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="container text-center space30">
+            <a asp-action="#" class="text-muted">Terms of Service</a> | <a asp-action="#" class="text-muted">Privacy Policy</a>
+        </div>
+    </div>
+</body>
+</html>
+

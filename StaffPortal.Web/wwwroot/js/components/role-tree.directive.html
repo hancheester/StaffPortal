@@ -1,0 +1,6 @@
+﻿<ul>
+    <li ng-repeat="role in roles">
+        <a href="#" ng-click="vm.selectRole(role.id)" class="">{{role.name}}</a>
+        <role-tree roles="role.children" ng-show="role.children.length > 0" on-select="select()"></role-tree>
+    </li>
+</ul>

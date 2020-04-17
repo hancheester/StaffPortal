@@ -1,0 +1,114 @@
+﻿@{
+    ViewData["Title"] = "Pending Leave Request";
+}
+
+@section Styles {
+    <link href="~/css/calendar.min.css" rel="stylesheet" />
+    <link href="~/lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet" />
+}
+
+@section Scripts{    
+    <script src="~/js/leave/leave-approval.controller.js" asp-append-version="true"></script>
+    <script src="~/js/Manage/controllers/rejectedRequestsCtrl.js" asp-append-version="true"></script>
+    <script src="~/js/components/calendar.directive.js" asp-append-version="true"></script>
+}
+
+<div ng-app="app" ng-controller="LeaveApprovalController as vm">
+    <h1>Pending Leave Request</h1>
+    <div class="col-sm-12 text-center">
+        <h2 ng-show="vm.hasNoPendingRequest">No pending requests at the moment...</h2>
+    </div>
+    <div class="row text-right">
+        <a ng-href="#!/rejectedRequests" class="btn btn-default">Rejected Requests</a>
+    </div>
+    <div class="clearfix space10"></div>
+    <div class="row" ng-show="vm.pendingLeaveRequests.length > 0">
+        <div class="col-sm-7">
+            <div class="panel">
+                <div class="panel-body">
+                    Department:
+                    <select name="department" id="department"
+                            ng-options="department.name for department in vm.departments track by department.id"
+                            ng-model="vm.selectedDepartment"
+                            ng-change="vm.refreshCalendar()"></select>
+                    <p></p>
+                    <calendar ng-model="requestedDays"
+                                disabled="false"
+                                calendar-data="vm.calendarData"
+                                current-date="vm.currentDate"
+                                show-busy="vm.calendarIsBusy"
+                                next-click="vm.getCalendarData(date)"
+                                previous-click="vm.getCalendarData(date)">
+                    </calendar>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="legend-item">
+                        <div class="li-color acceptable">
+                        </div>
+                        <div class="li-title">
+                            Healthy Staff Level
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="li-color decent">
+
+                        </div>
+                        <div class="li-title">
+                            Decent Staff Level
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="li-color critical">
+
+                        </div>
+                        <div class="li-title">
+                            Critical Staff Level
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="li-color disabled">
+                        </div>
+                        <div class="li-title">
+                            Disabled
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div ng-repeat="request in vm.pendingLeaveRequests"
+                    class="panel"
+                    ng-class="{ 'panel-danger' : $index == 0 && request.isEmergency, 'panel-primary' : $index == 0 && !request.isEmergency, 'panel-default' : $index > 0 }">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        {{request.employeeName}} <span class="pull-right">{{request.businessRole}}</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p class="text-primary">{{request.leaveTypeName}}</p>
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="date in request.pendingRequestedDates">
+                            {{date.date}}<br />
+                            Department: {{date.department}}<br />
+                            Role: {{date.role}}<br />
+                            Staff Level: {{date.staffLevel}}
+                        </li>
+                    </ul>
+                    <blockquote ng-show="request.note">
+                        <p>{{request.note}}</p>
+                    </blockquote>
+                    <textarea ng-model="request.rejectionReason" class="form-control" placeholder="If rejected, please provide a reason here."></textarea>
+                    <p class="text-danger" ng-show="request.isRequired">Required</p>
+                </div>
+                <div class="panel-footer">
+                    <div class="text-right">
+                        <button class="btn btn-info" ng-click="vm.reject($index)" ng-disabled="$index != 0 || request.isRejecting">{{request.isRejecting ? 'Rejecting' : 'Reject'}}</button>
+                        <button class="btn btn-info" ng-click="vm.approve($index)" ng-disabled="$index != 0 || request.isApproving">{{request.isApproving ? 'Approving' : 'Approve'}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

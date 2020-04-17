@@ -1,0 +1,37 @@
+﻿<div class="header">
+    <i class="fa fa-angle-left" ng-click="vm.previous()"></i>
+    <span>{{vm.currentDate.format("MMMM YYYY")}}</span>
+    <i class="fa fa-angle-right" ng-click="vm.next()"></i>
+</div>
+
+<div class="week names">
+    <span class="day">Monday</span>
+    <span class="day">Tuesday</span>
+    <span class="day">Wednesday</span>
+    <span class="day">Thursday</span>
+    <span class="day">Friday</span>
+    <span class="day">Saturday</span>
+    <span class="day">Sunday</span>
+</div>
+
+<div ng-show="showBusy" class="text-center">
+    <i class="fa fa-spinner fa-spin"></i> Loading...
+</div>
+
+<div ng-hide="showBusy" class="week" ng-repeat="week in vm.weeks">
+    <span ng-repeat="day in week.days"
+        class="day {{day.status}}"
+        ng-class="{ 
+        today: day.isToday, 
+        'different-month': !day.isCurrentMonth, 
+        selected: day.selected,
+        disabled: day.isDisabled || !day.isRequestable, 
+        isEmergencyRequestable: day.isEmergencyRequestable 
+        }"
+        uib-popover-html="day.employeesOnHolidaysHTML"
+        popover-placement="right"
+        popover-trigger="'mouseenter'"
+        ng-click="vm.select(day)">
+            {{day.number}}
+    </span>
+</div>

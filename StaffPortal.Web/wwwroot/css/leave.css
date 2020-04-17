@@ -1,0 +1,150 @@
+﻿/*@main-color: rgba(236, 41, 34, 1);*/
+.main-color {
+  background-color: #35588d;
+}
+.darker-main {
+  background-color: #192a43;
+}
+.saturated-main {
+  background-color: #19539f;
+}
+.smooth-main {
+  background-color: #5aa1e7;
+}
+.light-main {
+  background-color: #80bbff;
+}
+.smooth-smain {
+  background-color: #0080db;
+}
+.light-smain {
+  background-color: #0590d6;
+}
+div.color {
+  width: 100%;
+  padding: 20px;
+  font-weight: 700;
+  font-size: 22px;
+  color: #c6c6c6;
+}
+/*
+    .critical - below department minimum staff level or mininum required role is zero
+    .decent - minimum required role is zero but above department mininum staff level
+    .acceptable - none of the above
+*/
+.pending-requests .panel {
+  border: 2px solid #cfdef2;
+  margin-bottom: 10px;
+  border-radius: 0;
+}
+.pending-requests .panel.critical {
+  border-color: #f58aa8;
+}
+.pending-requests .panel.decent {
+  border-color: #fff5d6;
+}
+.pending-requests .panel.acceptable {
+  border-color: #a7d54e;
+}
+.pending-requests .panel:after {
+  display: table;
+  content: " ";
+  padding: 2px;
+  background-color: #eeeeee;
+  margin-bottom: 20px;
+  width: 100%;
+}
+.pending-requests .panel > .panel-body > .leave-type:before {
+  font-family: 'FontAwesome';
+  content: '\f05a';
+  color: inherit;
+  padding: 0 5px 0 0;
+  position: relative;
+  font-size: 22px;
+}
+.pending-requests .panel.panel-primary {
+  -webkit-box-shadow: 0 30px 45px -10px #b1b1b1;
+  -moz-box-shadow: 0 30px 45px -10px #b1b1b1;
+  box-shadow: 0 30px 45px -10px #b1b1b1;
+}
+.pending-requests .panel.panel-primary .panel-heading {
+  background-color: #94bae3;
+  border: 0;
+}
+.pending-requests .panel.panel-primary .panel-body *,
+.pending-requests .panel.panel-primary .panel-footer * {
+  color: #999999;
+}
+.pending-requests .panel.panel-primary > .panel-body > .leave-type {
+  color: #94bae3;
+}
+.pending-requests .panel.panel-primary .panel-footer .btn-success {
+  background-color: #9dc798;
+  border-color: #9dc798;
+}
+.pending-requests .panel.panel-primary .panel-footer .btn-danger {
+  background-color: #ffaaaa;
+  border-color: #ffaaaa;
+}
+.pending-requests .panel.panel-primary.active .panel-heading {
+  background-color: transparent;
+}
+.pending-requests .panel.panel-primary.active .panel-heading .panel-title {
+  color: #0590d6;
+}
+.pending-requests .panel.panel-primary.active .panel-heading .panel-title .title-line {
+  position: relative;
+  width: 100%;
+  transform: matrix(1, 0, 0, 1, 0, 0);
+  bottom: 0;
+  top: 5px;
+  height: 1px;
+  background-color: #333;
+}
+.pending-requests .panel.panel-primary.active > .panel-body > .leave-type {
+  color: #2875c7;
+}
+.pending-requests .panel.panel-primary.active .panel-footer .btn-success {
+  background-color: #3a8f31;
+  border-color: #3a8f31;
+  color: white;
+}
+.pending-requests .panel.panel-primary.active .panel-footer .btn-danger {
+  background-color: #ff5555;
+  border-color: #ff5555;
+  color: white;
+}
+.pending-requests .panel.panel-primary.active .panel-footer .btn-primary {
+  color: white;
+}
+.pending-requests .panel.panel-primary.active .panel-footer .btn.btn-info {
+  width: auto;
+  letter-spacing: 2px;
+  color: white;
+  font-weight: 100;
+  padding: 5px 15px;
+}
+.pending-requests .panel.panel-danger {
+  border-color: #ff6666;
+}
+.pending-requests .panel.panel-danger > .panel-body > .leave-type {
+  color: #ff6666;
+}
+.pending-requests .panel.panel-danger .panel-heading {
+  background-color: #f0544e;
+}
+.pending-requests .panel.panel-danger .panel-heading .panel-title {
+  color: white;
+}
+.pending-requests .panel.panel-danger.active {
+  border-color: #ff5555;
+}
+.pending-requests .panel.panel-danger.active > .panel-body > .leave-type {
+  color: #ec2922;
+}
+.pending-requests .panel.panel-danger.active .panel-heading {
+  background-color: #ff170f;
+}
+.pending-requests .panel.panel-danger.active .panel-heading .panel-title {
+  color: white;
+}

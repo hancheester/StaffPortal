@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Edit Staff Shifts";
+}
+
+@section Styles {
+    <link href="~/js/shift/shift.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="~/js/shift/shift.controller.js" asp-append-version="true"></script>
+    <script src="~/js/shift/shift-calendar-header.component.js" asp-append-version="true"></script>
+    <script src="~/js/shift/shift-calendar-body.component.js" asp-append-version="true"></script>
+    <script src="~/js/shift/shift-calendar-footer.component.js" asp-append-version="true"></script>
+    <script src="~/js/shift/shift-calendar-role-staff.component.js" asp-append-version="true"></script>
+}
+
+<div ng-app="app" ng-controller="ShiftController as vm">
+    <h1>Edit Staff Shifts</h1>
+    <div class="row">
+        <label class="control-label col-md-1 text-right">Department: </label>
+        <div class="col-md-3">
+            <select class="form-control" id="selectedDepartment" name="selectedDepartment"
+                    ng-model="vm.selectedDepartment"
+                    ng-change="vm.load()"
+                    ng-options="department.name for department in vm.departments track by department.id"                    
+                    ng-disabled="vm.departments.length === 0"></select>
+        </div>
+
+        <label class="control-label col-md-1 text-right">Role: </label>
+        <div class="col-md-3">
+            <select class="form-control" id="selectedRole" name="selectedRole"
+                    ng-model="vm.selectedRole"
+                    ng-change="vm.load()"
+                    ng-options="role.name for role in vm.roles track by role.id"
+                    ng-disabled="vm.roles.length === 0">
+                <option value="">All</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <shift-calendar-header dates="vm.dates" on-next="vm.next" on-prev="vm.prev"></shift-calendar-header>
+        <div class="col-md-12" ng-hide="vm.departmentalRoles.length > 0"><i class="fa fa-spinner fa-spin"></i></div>
+        <shift-calendar-body department-id="vm.selectedDepartment.id" roles="vm.departmentalRoles" on-get-employee-roles="vm.getEmployeeRoles" on-change-time="vm.changeTime" on-change-role="vm.changeRole"></shift-calendar-body>
+        <shift-calendar-footer reports="vm.statusReports"></shift-calendar-footer>
+    </div>
+</div>

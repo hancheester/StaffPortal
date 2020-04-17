@@ -1,0 +1,85 @@
+﻿
+<section class="admin">
+    <div class="content-wrapper">
+        <div class="container">
+            <div class="col-md-4">
+                <a href="#/" class="btn btn-default"><i class="fa fa-angle-left"></i> Back</a>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <h2 class="text-uppercase text-center">Leave History</h2>
+                    <hr>
+                    <div class="space20">&nbsp;</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <label class="control-label col-sm-2 text-right">Department: </label>
+                <div class="col-sm-3">
+                    <select class="form-control form_control_txt" id="selectedDepartment" name="selectedDepartment"
+                            ng-model="selectedDepartment"
+                            ng-options="department.name for department in departments track by department.id"
+                            ng-change="selectDepartment(selectedDepartment.id)"
+                            ng-disabled="departments <= 1"></select>
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="space20"></div>
+                    <div class="table-responsive">
+                        <table class="table table-responsive table-striped table_admin">
+                            <thead>
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Applicant Name</th>
+                                    <th>Requested Dates</th>
+                                    <th>Role</th>
+                                    <th>Rejection Reason</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="request in rejectedRequests | startFrom: (currentPage - 1) * pageSize | limitTo: pageSize">
+                                    <td><p class="p_medic">{{ request.id }}</p></td>
+                                    <td><p class="p_medic">{{ request.employeeName }}</p></td>
+                                    <td><p class="p_medic" ng-repeat="date in request.requestedDates">{{ date.date }}</p></td>
+                                    <td><p class="p_medic">{{ request.businessRole }} </p></td>
+                                    <td><p class="p_medic">{{ request.rejectionReason }} </p></td>
+                                    <td>
+                                        <div class="input-group pull-right">
+                                            <button type="button" class="btn" ng-click="approveIsCollapsed = !approveIsCollapsed">Approve Request</button>
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" ng-click="approveIsCollapsed = !approveIsCollapsed"><i class="fa fa-check" aria-hidden="true"></i></button>
+                                            </span>
+                                        </div>
+                                        <div uib-collapse="approveIsCollapsed">
+                                            <form id="approveReasonForm" name="rejectionReasonForm" novalidate>
+                                                <div class="form-group">
+                                                    <label class="col-sm-12 lbl_form2 space5" for="reason">Approve Reason:</label>
+                                                    <div class="col-sm-12">
+                                                        <div class="form-group" ng-class="{ 'has-error' : rejectionReasonForm.approveReason.$error.required && (rejectionReasonForm.approveReason.$dirty || rejectionReasonForm.approveReason.$touched) }" ng-cloak>
+                                                            <textarea class="full-width form-control"
+                                                                      id="approveReason" name="approveReason"
+                                                                      ng-model="request.approveReason" required></textarea>
+                                                            <p class="text-danger" ng-show="rejectionReasonForm.approveReason.$error.required && (rejectionReasonForm.approveReason.$dirty || rejectionReasonForm.approveReason.$touched)">Reason for approval is required</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="pull-right">
+                                                    <a class="btn btn-default" data-toggle="collapse" href="#rejectionReason">Cancel</a>
+                                                    <button class="btn btn-primary" ng-click="updateRequest(request, $index, true)" ng-disabled="rejectionReasonForm.approveReason.$error.required">Submit</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                            boundary-link-numbers="true" rotate="false" previous-text="Prev"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

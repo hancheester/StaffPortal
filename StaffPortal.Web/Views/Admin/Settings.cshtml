@@ -1,0 +1,348 @@
+﻿@{
+    ViewData["Title"] = "Settings";
+}
+
+@section scripts{
+    <script src="~/lib/angular-route/angular-route.min.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload-shim.min.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+    <script src="~/js/Admin/admin-app.js"></script>
+    <script src="~/js/Admin/directives/listMonthsDirective.js"></script>
+    <script src="~/js/Admin/controllers/companyInfoController.js" asp-append-version="true"></script>
+    <script src="~/js/Admin/controllers/leaveSettingsController.js" asp-append-version="true"></script>
+    <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/lib/angular-notify/angular-notify.js"></script>
+
+    <script>
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show');
+        })
+    </script>
+}
+
+@section Styles {
+    <link href="~/lib/angular-notify/angular-notify.css" rel="stylesheet" />
+}
+
+<div ng-app="admin-app">
+    <h1>Settings</h1>
+    <ul class="nav nav-tabs" id="myTab">
+        <li class="nav-item active">
+            <a class="nav-link active" href="#companyInfo">Company Information</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#leaveSettings">Leave Settings</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#IPRestriction">IP Restriction</a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        @* COMPANY INFO *@
+        <div class="tab-pane fade active in" id="companyInfo" role="tabpanel" ng-controller="companyInfoController">
+            <div class="container">
+                <form class="form-horizontal" id="companyInfoForm" name="companyInfoForm" novalidate role="form">
+                    <div class="form-group">
+
+                        @*<div class="col-sm-12" ng-show="companyInfoForm.$invalid">
+                                <div class="alert alert-danger alert-dismissible col-sm-6">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <strong ng-repeat="error in companyInfoForm.$error" >{{error.$name}}</strong>
+                                </div>
+                            </div>*@
+                    </div>
+
+                    <div class="space40"></div>
+
+                    <div class="form-group" ng-class="{ 'has-error' : companyInfoForm.companyName.$error.required }" ng-cloak>
+                        <label class="control-label col-sm-2">Company Name *</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" id="companyName" name="companyName" placeholder="Company Name" ng-model="companyInfo.companyName" required />
+                            <p class="text-danger" ng-show="companyInfoForm.companyName.$error.required" ng-cloak>Company Name is required</p>
+                        </div>
+                    </div>
+
+                    @*<div class="form-group" ng-class="{ 'has-error' : companyInfoForm.file.$error.required && picFile == null }" ng-cloak>*@
+
+                    <div class="form-group" ng-cloak>
+                        <label class="control-label col-sm-2">Logo</label>
+                        <div class="col-sm-2 col-xs-3">
+
+                            <input type="file" ngf-select ng-model="picFile" name="file"
+                                    accept="image/*" ngf-max-size="4MB"
+                                    ngf-model-invalid="errorFile">
+                            <div class="space30"></div>
+
+                            <img ng-show="companyInfoForm.file.$valid" ngf-thumbnail="picFile" class="thumb">
+                            <img ng-show="!picFile" src="{{companyInfo.logoPath}}" class="thumb">
+                            <div class="space30"></div>
+                            <button class="btn btn-warning" ng-click="picFile = null" ng-show="picFile">Remove</button>
+
+                            <i ng-show="companyInfoForm.file.$error.maxSize">
+                                File too large
+                                {{errorFile.size / 1000000|number:1}}MB: max 4M
+                            </i>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-class="{ 'has-error' : companyInfoForm.contactNumber.$error.required }" ng-cloak>
+                        <label class="control-label col-sm-2">Contact Number *</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" id="contactNumber" name="contactNumber" placeholder="Contact Number" ng-model="companyInfo.contactNumber" required />
+                            <p class="text-danger" ng-show="companyInfoForm.contactNumber.$error.required" ng-cloak>Contact Number Name is required</p>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' : companyInfo.financialYearStart > companyInfo.financialYearEnd }" ng-cloak>
+                        <label class="control-label col-sm-2">Financial Year *</label>
+                        <div class="col-sm-10">
+                            <div class="form-group" ng-class="{ 'has-error' : companyInfoForm.financialYearStart.$error.required }" ng-cloak>
+                                <label class="control-label col-sm-1">From:</label>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="financialYearStart" id="financialYearStart" uib-datepicker-popup="{{format}}"
+                                                ng-model="companyInfo.financialYearStart" is-open="popup1.opened" datepicker-options="dateOptions"
+                                                close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" required />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </div>
+                                    <p class="text-danger" ng-show="companyInfoForm.financialYearStart.$error.required" ng-cloak>Date is required</p>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-class="{ 'has-error' : companyInfoForm.financialYearEnd.$error.required }" ng-cloak>
+                                <label class="control-label col-sm-1">To:</label>
+                                <h4 class="col-sm-3">Financial Year End: {{companyInfo.financialYearEnd.format('DD-MM')}}</h4>
+
+
+                            </div>
+                            <p class="text-danger" ng-show="companyInfo.financialYearStart > companyInfo.financialYearEnd" ng-cloak>Closing date is before commencement date.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12" ng-show="errMessages.length > 0">
+                        <div class="alert alert-danger alert-dismissible col-sm-6">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>ERROR!</strong>
+                            <ul class="list-danger">
+                                <li ng-repeat="errMessage in errMessages">
+                                    {{errMessage}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div class="space40"></div>
+                    <div class="form-group">
+                        <div class="col-sm-2 col-sm-offset-5">
+                            <div class="form-group">
+                                <button class="btn btn-info" ng-click="uploadPic(picFile)" ng-disabled="companyInfoForm.$invalid">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        @* LEAVE SETTINGS *@
+        <div class="tab-pane fade" id="leaveSettings" role="tabpanel">
+            <div class="container" ng-controller="leaveSettingsController">
+                <form class="form-horizontal" name="leaveForm" novalidate role="form">
+                    <div class="space40"></div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="LeavesToNewYear" class="control-label col-sm-3">Allow leaves to be carried forward to a new financial year?</label>
+                            <div class="checkbox col-sm-6">
+                                <label class="chk-container col-sm-3">
+                                    <input type="checkbox" ng-model="leaveSettings.leavesToNewYear" name="LeavesToNewYear" id="LeavesToNewYear">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">Please select months to only accrue additional holiday as paid.</label>
+                            <div class="col-sm-6">
+                                <list-months months="leaveSettings.monthsToAccrue"></list-months>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group" ng-class="{ 'has-error' : leaveSettings.leaveNoticePeriod.$error.required }" ng-cloak>
+                            <label class="control-label col-sm-3" for="leaveNoticePeriod">How many days in advance to allow for applying leave request?</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" id="leaveNoticePeriod" name="leaveNoticePeriod" ng-model="leaveSettings.leaveNoticePeriod" type="number" min="0" required />
+                                <p class="text-danger" ng-show="leaveSettings.leaveNoticePeriod.$error.required" ng-cloak>This field is required</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group" ng-class="{ 'has-error' : leaveSettings.emergencyAllowance.$error.required }" ng-cloak>
+                            <label class="control-label col-sm-3" for="emergencyAllowance">How many days in future to allow for emergency leave request?</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" id="emergencyAllowance" name="emergencyAllowance" ng-model="leaveSettings.emergencyAllowance" type="number" min="0" required />
+                                <p class="text-danger" ng-show="leaveSettings.emergencyAllowance.$error.required" ng-cloak>Leave Type Name is required</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group" ng-class="{ 'has-error' : leaveSettings.accruableRequestPeriod.$error.required }" ng-cloak>
+                            <label class="control-label col-sm-3" for="emergencyAllowance">How many to request an accrued leave?</label>
+                            <div class="col-sm-2">
+                                <input class="form-control" id="accruableRequestPeriod" name="accruableRequestPeriod" ng-model="leaveSettings.accruableRequestPeriod" type="number" min="0" required />
+                                <p class="text-danger" ng-show="leaveSettings.accruableRequestPeriod.$error.required" ng-cloak>Leave Type Name is required</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space50"></div>
+                    <fieldset id="leaveTypes" ng-model="leaveTypes">
+                        <legend>Leave Types</legend> <i></i>
+                        <div class="col-sm-7 col-sm-offset-3 col-xs-12 col-xs-offset-0">
+                            <table class="table table-responsive table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Requestable</th>
+                                        <th>Payable</th>
+                                        <th>Accruable</th>
+                                        <th>Immpact On Allowance?</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr ng-repeat="leaveType in leaveTypes">
+                                        <td>
+                                            <p>{{leaveType.name}}</p>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label class="chk-container">
+                                                    <input type="checkbox" ng-model="leaveType.requestable" />
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label class="chk-container">
+                                                    <input type="checkbox" ng-model="leaveType.payable" />
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label class="chk-container">
+                                                    <input type="checkbox" ng-model="leaveType.accruable" ng-click="checkImpactOnAllowance(leaveType)" />
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label class="chk-container" uib-popover="'Impact On Allowance?' is checked by default as long as Accruable is also checked!" popover-enable="leaveType.accruable" popover-class="alert-warning">
+                                                    <input type="checkbox" ng-model="leaveType.impactOnAllowance" ng-disabled="leaveType.accruable" />
+                                                    <span class="checkmark" ng-class="{'disabled' : leaveType.accruable}"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a ng-show="leaveType.id != 0" class="clickable" ng-click="deleteLeaveType(leaveType, $index)">Delete</a>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </fieldset>
+
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-6">
+                            <div class="form-group">
+                                <button class="btn btn-info" ng-click="saveLeaveSettings()" ng-disabled="leaveSettings.$invalid">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <form class="form-horizontal" name="newLeaveTypeForm" novalidate role="form">
+                    <div class="col-sm-6">
+                        <div class="panel">
+                            <div class="panel-title">
+                                <h3>Create New Leave Type</h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group" ng-class="{ 'has-error' : newLeaveTypeForm.newLeaveTypeName.$error.required && (newLeaveTypeForm.newLeaveTypeName.$dirty || newLeaveTypeForm.newLeaveTypeName.$touched) }" ng-cloak>
+                                    <label class="control-label col-sm-4">Leave Type *</label>
+                                    <div class="col-sm-6">
+                                        <input class="form-control" id="newLeaveTypeName" name="newLeaveTypeName" placeholder="Leave type name" ng-model="newLeaveType.name" required />
+                                        <p class="text-danger" ng-show="newLeaveTypeForm.newLeaveTypeName.$error.required && (newLeaveTypeForm.newLeaveTypeName.$dirty || newLeaveTypeForm.newLeaveTypeName.$touched)" ng-cloak>Leave Type Name is required</p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label class="chk-container">
+                                            <input type="checkbox" ng-model="newLeaveType.requestable" />
+                                            <span class="checkmark"></span>
+                                            Requestable
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label class="chk-container">
+                                            <input type="checkbox" ng-model="newLeaveType.payable" />
+                                            <span class="checkmark"></span>
+                                            Payable
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label class="chk-container">
+                                            <input type="checkbox" ng-model="newLeaveType.accruable" ng-click="checkImpactOnAllowance(newLeaveType)" />
+                                            <span class="checkmark"></span>
+                                            Accruable
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <label class="chk-container" uib-popover="'Impact On Allowance?' is checked by default as long as Accruable is also checked!" popover-enable="newLeaveType.accruable" popover-class="alert-warning">
+                                            <input type="checkbox" ng-model="newLeaveType.impactOnAllowance" ng-disabled="newLeaveType.accruable" />
+                                            <span class="checkmark" ng-class="{'disabled' : newLeaveType.accruable}"></span>
+                                            Impact On Allowance
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer">
+                                <button class="btn btn-info" ng-click="createNewLeaveType(newLeaveType, newLeaveTypeForm)" ng-disabled="newLeaveTypeForm.$invalid">Create New Leave Type</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="tab-pane fade" id="IPRestriction" role="tabpanel">
+            <h3>IP Restriction...</h3>
+        </div>
+    </div>
+
+</div>

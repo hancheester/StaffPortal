@@ -1,0 +1,260 @@
+﻿@{
+    ViewData["Title"] = "My Leaves";
+}
+
+@section Styles {
+    <link href="~/css/calendar.min.css" rel="stylesheet" />    
+}
+
+@section Scripts{
+    <script src="~/js/app.module.js" asp-append-version="true"></script>
+    <script src="~/js/leave/leave.controller.js" asp-append-version="true"></script>
+    <script src="~/js/components/calendar.directive.js" asp-append-version="true"></script>
+    <script src="~/js/components/wait-cursor.directive.js" asp-append-version="true"></script>
+}
+
+<div ng-app="app" ng-controller="LeaveController as vm">
+    <h1>My Leave</h1>
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-body">
+                    <calendar 
+                        ng-model="vm.leaveRequest.requestedDates"
+                        disabled="false"
+                        calendar-data="vm.calendarData"
+                        calendar-leave-settings="vm.calendarLeaveSettings"
+                        show-busy="vm.calendarIsBusy"
+                        emergency="emergencyOnly"
+                        requestable="requestableOnly"
+                        next-click="vm.getCalendarData(date)"
+                        previous-click="vm.getCalendarData(date)">
+                    </calendar>
+                </div>
+            </div>
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="legend-item">
+                        <div class="li-color acceptable">
+                        </div>
+                        <div class="li-title">
+                            Healthy Staff Level
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="li-color decent">
+
+                        </div>
+                        <div class="li-title">
+                            Decent Staff Level
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="li-color critical">
+
+                        </div>
+                        <div class="li-title">
+                            Critical Staff Level
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="li-color disabled">
+                        </div>
+                        <div class="li-title">
+                            Disabled
+                        </div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="li-color isEmergencyRequestable">
+                        </div>
+                        <div class="li-title">
+                            Emergency
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        My Leave <strong>Quota</strong>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <wait-cursor ng-show="vm.quotaIsBusy"></wait-cursor>
+                    <div class="col-xs-6">
+                        <canvas id="total" class="chart chart-doughnut"
+                                chart-data="vm.leaveQuotaTotalChart.data"
+                                chart-labels="vm.leaveQuotaTotalChart.labels"
+                                chart-options="vm.leaveQuotaTotalChart.options"
+                                chart-colors="vm.leaveQuotaTotalChart.colors"
+                                width="150"
+                                height="150"></canvas>
+                    </div>
+                    <div class="col-xs-6">
+                        <canvas id="total" class="chart chart-doughnut"
+                                chart-data="vm.leaveQuotaChart.data"
+                                chart-labels="vm.leaveQuotaChart.labels"
+                                chart-options="vm.leaveQuotaChart.options"
+                                chart-colors="vm.leaveQuotaChart.colors"
+                                width="150"
+                                height="150"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-show="vm.leaveRequest.requestedDates.length > 0" ng-cloak>
+            <form id="requestLeaveForm" name="requestLeaveForm" novalidate>
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            Requested <strong>Dates</strong>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div ng-show="emergencyOnly" class="checkbox">
+                            <label ng-class="vm.leaveRequest.isEmergency || emergencyOnly ? 'emergency' : ''" ng-cloak>
+                                This is an emergency leave request
+                            </label>
+                        </div>
+
+                        <div ng-hide="emergencyOnly">
+                            <label ng-cloak>
+                                <input type="checkbox" ng-model="vm.leaveRequest.isEmergency">
+                                Is this an emergency?
+                            </label>
+                        </div>
+
+                        <label>Leave Type:</label>
+                        <div class="form-group" ng-class="{ 'has-error' : requestLeaveForm.leaveType.$error.required }" ng-cloak>
+                            <select class="form-control form_control_txt" id="leaveType" name="leaveType"
+                                    required
+                                    ng-model="vm.leaveRequest.leaveType"
+                                    ng-options="leaveType.name for leaveType in vm.leaveTypes track by leaveType.id"></select>
+                            <p class="text-danger" ng-show="requestLeaveForm.leaveType.$error.required" ng-cloak>Required</p>
+                        </div>
+
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Option</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="requestedDate in vm.leaveRequest.requestedDates" ng-cloak>
+                                    <td>
+                                        <p>{{requestedDate.date.format("dddd, MMMM Do YYYY")}}</p>
+                                    </td>
+                                    <td>
+                                        <div ng-click="requestedDate.isFullDay = !requestedDate.isFullDay">
+                                            <button ng-class="requestedDate.isFullDay ? 'btn-success' : 'btn-default'" class="btn text-center">Full Day</button>
+                                            <button ng-class="requestedDate.isFullDay ? 'btn-default' : 'btn-success'" class="btn text-center">Half Day</button>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button ng-click="vm.removeRequestedDate($index)" class="btn btn-danger">Remove Date</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="form-group" ng-class="{ 'has-error' : requestLeaveForm.note.$error.required }" ng-cloak>
+                            <textarea class="form-control"
+                                      id="note" 
+                                      name="note"
+                                      placeholder="If there is an emergency, please make a note here."
+                                      ng-model="note" 
+                                      ng-required="vm.leaveRequest.isEmergency">
+                            </textarea>
+                            <p class="text-danger" ng-show="requestLeaveForm.note.$error.required">In case your leave request is an Emergency, you might need to specify a reason:</p>
+                        </div>
+                        <div class="col-sm-12" ng-show="errorMessages.length > 0">
+                            <div class="alert alert-danger alert-dismissible col-sm-6">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <strong>ERROR!</strong>
+                                <ul class="list-danger">
+                                    <li ng-repeat="errMessage in errorMessages">
+                                        {{errMessage}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button class="btn btn-info" ng-click="vm.submitLeaveRequest()" ng-disabled="requestLeaveForm.$invalid || vm.leaveRequest.isBusy">
+                                {{ vm.leaveRequest.isBusy ? "Submitting..." : "Submit" }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-sm-12">
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="panel-title">My Leave Requests <strong>History</strong></div>
+                </div>
+                <div class="panel-body">
+                    <wait-cursor ng-show="vm.history.isBusy"></wait-cursor>
+                    <div ng-hide="vm.history.isBusy" ng-cloak>
+                        <div class="panel panel-default" ng-repeat="request in vm.history.leaveRequests">
+                            <div class="panel-heading">
+                                <a data-toggle="collapse" href="#request{{$index}}">
+                                    <div class="panel-title">
+                                        {{request.isEmergency ? 'Emergency ' : null }}{{request.type}} requested on {{request.requestedOn}}
+                                        <span class="pull-right">{{request.overallStatus}}</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div id="request{{$index}}" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-2">
+                                            Date
+                                        </div>
+                                        <div class="col-sm-2">
+                                            Option
+                                        </div>
+                                        <div class="col-sm-2">
+                                            Department
+                                        </div>
+                                        <div class="col-sm-2">
+                                            Status
+                                        </div>
+                                        <div class="col-sm-2">
+                                            Approved by
+                                        </div>                                        
+                                    </div>
+                                    <div class="row" ng-cloak ng-repeat="date in request.requestedDates">
+                                        <div class="col-sm-2">
+                                            {{date.date}}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{date.isFullDay ? 'Full Day' : 'Half Day'}}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{date.department}}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{date.status}} <i ng-show="data.reason" uib-popover="{{date.reason}}" popover-trigger="'mouseenter'" class="fa fa-comment" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {{date.approver}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul uib-pagination
+                            ng-model="vm.history.currentPage"
+                            total-items="vm.history.totalRequests"
+                            items-per-page="vm.history.pageSize"
+                            class="pagination-sm"
+                            boundary-link-numbers="true"
+                            rotate="false"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

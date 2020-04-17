@@ -1,0 +1,16 @@
+﻿<div class="col-md-2"
+     ng-mouseover="vm.showPencil = true" 
+     ng-mouseleave="vm.showPencil = false">
+    {{vm.name}}
+    <i ng-show="vm.showPencil" class="fa fa-pencil cursor-pointer" ng-click="vm.editUser()"></i>
+</div>
+<div class="col-md-10">
+    <div class="col-md-1 day"
+         ng-class="{ 'bg-warning': vm.isOnLeave(day) }"
+         ng-mouseover="showPencil = true" 
+         ng-mouseleave="showPencil = false"
+         ng-repeat="day in vm.days">
+        {{vm.formatTimes(day)}}
+        <i ng-show="showPencil" class="fa fa-pencil cursor-pointer" ng-click="vm.editTime(day)"></i>
+    </div>
+</div>

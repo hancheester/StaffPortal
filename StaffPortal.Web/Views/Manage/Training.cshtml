@@ -1,0 +1,182 @@
+﻿@{
+    ViewData["Title"] = "My Trainings";
+}
+
+@section scripts {
+    <script src="~/js/Manage/training-app.js"></script>
+    <script src="~/js/Manage/controllers/trainingCtrl.js" asp-append-version="true"></script>
+}
+
+<div ng-app="training-app" ng-controller="trainingCtrl">
+    <div class="row">
+
+        <div class="panel-rel col-sm-4">
+            <img class="media-object" src="~/images/my_trainings/ongoing.png" alt="...">
+            <div class="panel-body pad-top60">
+                <h4 class="panel-title">Training Modules</h4>
+                <p>
+                    Fusce gravida tortor felis
+                    Ac dictum risus sagittis id morbi posu justo eleifend libero ultricies
+                </p>
+                <button class="btn btn-block">Read More</button>
+            </div>
+        </div>
+
+        <div class="panel-rel col-sm-4">
+            <img class="media-object" src="~/images/my_trainings/overdue.png" alt="...">
+            <div class="panel-body pad-top60">
+                <h4 class="panel-title">Overdue Courses</h4>
+                <p>
+                    Fusce gravida tortor felis
+                    Ac dictum risus sagittis id morbi posu justo eleifend libero ultricies
+                </p>
+                <button class="btn btn-block">Read More</button>
+            </div>
+        </div>
+
+        <div class="panel-rel col-sm-4">
+            <img class="media-object" src="~/images/my_trainings/completed.png" alt="...">
+            <div class="panel-body pad-top60">
+                <h4 class="panel-title">Completed</h4>
+                <p>
+                    Fusce gravida tortor felis
+                    Ac dictum risus sagittis id morbi posu justo eleifend libero ultricies
+                </p>
+                <button class="btn btn-block">Read More</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="space40"></div>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel-rel">
+                <div class="panel-body">
+
+                    <div class="profile-container col-sm-5">
+                        <div class="grey-circle">
+                            <img class="profile-img" src="~/images/profile.jpg" />
+                        </div>
+                        <div class="media-body">
+                            <h4 ng-cloak><strong>{{ user.firstName }}</strong> {{ user.lastName }}</h4>
+                            <p>{{ user.primaryBusinessRole.name }}</p>
+                        </div>
+                    </div>
+                    <div class="badge-container col-sm-7">
+                        <div class="col-sm-2 col-xs-4">
+                            <img src="~/images/my_trainings/badge_yellow.png" />
+                        </div>
+                        <div class="col-sm-2 col-xs-4">
+                            <img src="~/images/my_trainings/badge_green.png" />
+                        </div>
+                        <div class="col-sm-2 col-xs-4">
+                            <img src="~/images/my_trainings/badge_violet.png" />
+                        </div>
+                        <div class="col-sm-2 col-xs-4">
+                            <img src="~/images/my_trainings/badge_pink.png" />
+                        </div>
+                        <div class="col-sm-2 col-xs-4">
+                            <img src="~/images/my_trainings/badge_red.png" />
+                        </div>
+                        <div class="col-sm-2 col-xs-4">
+                            <img src="~/images/my_trainings/badge_orange.png" />
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="panel-rel">
+                            <div class="rewards-container col-sm-2">
+                                <p>Rewards</p>
+                            </div>
+
+                            <div class="col-sm-5">
+                                <label class="lbl-achievements">Your Latest Achievements</label>
+                            </div>
+                            <div class="col-sm-5 img-group">
+                                <img class="achievement" src="~/images/my_trainings/achievement_1.png" />
+                                <img class="achievement" src="~/images/my_trainings/achievement_2.png" />
+                                <img class="achievement" src="~/images/my_trainings/achievement_3.png" />
+                                <img class="achievement" src="~/images/my_trainings/achievement_4.png" />
+                                <button class="btn btn-default pull-right">View All</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="panel-rel">
+                <div class="panel-body">
+                    <div class="profile-container">
+                        <div class="col-sm-8">
+                            <h4>Certificates</h4>
+                            <p>Your latest Certificates</p>
+                        </div>
+                        <div class="col-sm-4"><button class="btn btn-default">View All</button></div>
+
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-sm-12 img-group">
+                            <img class="achievement" src="~/images/my_trainings/certificate_1.png" />
+                            <img class="achievement" src="~/images/my_trainings/certificate_2.png" />
+                            <button class="btn btn-default pull-right">View All</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="space40"></div>
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#training" data-toggle="tab">Trainings</a></li>
+        <li><a href="#invitations" data-toggle="tab">Training Invitations</a></li>
+    </ul>
+
+    <div class="row">
+        <div class="tab-content">
+            <div id="training" class="tab-pane active">
+                <div class="listing col-md-6">
+                    <div class="listing-title">
+                        <h4>First Aid Training  </h4>
+                        <h4 class="sp-strong title-right">Petter Pharmacy</h4>
+                    </div>
+                    <div class="listing-container bg-white">
+                        <div class="row listing-row">
+                            <p>
+                                Recommended for parents, grandparents or those caring for children and/or babies. Learn what to do if a child or baby starts choking,
+                                becomes unresponsive or swallows something harmful. Includes training for medical emergencies such as meningitis and asthma.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="listing col-md-6">
+                    <div class="listing-title">
+                        <h4>First Aid Training  </h4>
+                        <h4 class="sp-strong title-right">Petter Pharmacy</h4>
+                    </div>
+                    <div class="listing-container bg-white">
+                        <div class="row listing-row">
+                            <p>
+                                Suitable for people who work in low hazard environments or where Health and Safety Executive (HSE) guidelines indicate staff should
+                                hold a certificate in emergency first aid at work.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="invitations">
+                <ul>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+﻿[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+
+.box .panel {
+    margin-bottom: 0;
+}
+
+.box.empty {
+    min-height: 100px;
+}
+
+.box.source {
+    opacity: 0.4;
+}
+
+.box.over {
+    border: 2px dashed #aaa;
+}
+
+.box.drag * {
+    pointer-events: none;
+}
+
+.box.gap.over {
+    height: 30px;
+}
+
+.box.gap {
+    height: 20px;
+}

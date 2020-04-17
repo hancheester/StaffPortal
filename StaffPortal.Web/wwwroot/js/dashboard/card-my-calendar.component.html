@@ -1,0 +1,14 @@
+﻿<div class="panel panel-default" draggable="false">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{vm.title}}</h3>
+    </div>
+    <div class="panel-body">
+        <div uib-datepicker datepicker-options="vm.options" ng-model="dt" class="well well-sm"></div>
+
+        <span class="label label-primary">On Leave</span>
+        <!--<span class="label label-success">Public Holiday</span>-->
+        <div ng-hide="vm.progress === 100" class="progress space20">
+            <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: {{vm.progress}}%;"></div>
+        </div>
+    </div>
+</div>

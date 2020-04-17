@@ -1,0 +1,127 @@
+﻿@model DepartmentViewModel
+
+@{
+    ViewData["Title"] = "Create Department";
+}
+
+<section class="edit-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Edit department @Model.Name</h3>
+            </div>
+            <form method="post">
+                <input asp-for="@Model.Id" hidden />
+                <hr />
+                <div class="row inner-row">
+                    <div class="col-sm-3">
+                        <h4>Name*</h4>
+                    </div>
+                    <div class="col-sm-6">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <input asp-for="@Model.Name" class="form-control" placeholder="Department Name" />
+                            <span asp-validation-for="@Model.Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row inner-row">
+                    <div class="col-sm-3">
+                        <h4>Minimum Staff*</h4>
+                    </div>
+                    <div class="col-sm-2 col-xs-3">
+                        <div class="form-group">
+                            <input asp-for="@Model.MinimumRequired" class="form-control" type="number" />
+                            <span asp-validation-for="@Model.MinimumRequired" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row inner-row">
+                    <div class="col-sm-3">
+                        <h4>Opening Hours</h4>
+                    </div>
+                    <div class="col-xs-9">
+                        <table class="table table-responsive table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Open For Business</th>
+                                    <th>Opening Time</th>
+                                    <th>Closing Time</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @for (var i = 0; i < Model.OpeningHours.Count(); i++)
+                                {
+
+                                    <tr>
+
+                                        <td>
+                                            <input asp-for="@Model.OpeningHours[i].Id" hidden />
+                                            <p>@Model.OpeningHours[i].Day</p>
+                                            <input asp-for="@Model.OpeningHours[i].Day" hidden />
+                                        </td>
+                                        <td>
+                                            <div class="checkbox">
+                                                <label class="chk-container" asp-for="@Model.OpeningHours[i].IsOpen">
+                                                    <input asp-for="@Model.OpeningHours[i].IsOpen" />
+                                                    <span class="checkmark"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td><p>@Model.OpeningHours[i].OpeningTime</p></td>
+                                        <td><p>@Model.OpeningHours[i].ClosingTime</p></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row inner-row properties-list">
+                    <div class="col-sm-3">
+                        <h4>Required Staff</h4>
+                    </div>
+                    <div class="col-sm-9">
+
+                        @for (var i = 0; i < Model.BusinessRoles.Count(); i++)
+                        {
+                            <input asp-for="@Model.BusinessRoles[i].Id" hidden />
+                            <input asp-for="@Model.BusinessRoles[i].Name" hidden />
+                            <div class="col-sm-8">
+                                <div class="form-group pull-left">
+                                    <div class="checkbox">
+                                        <label class="chk-container" asp-for="@Model.BusinessRoles[i].IsChecked">
+                                            <input asp-for="@Model.BusinessRoles[i].IsChecked" />
+                                            <span class="checkmark"></span>
+                                            @Model.BusinessRoles[i].Name
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 ">
+                                <div class="form-group">
+                                    <input asp-for="@Model.BusinessRoles[i].IsChecked" hidden class="chk-status" />
+                                    <input asp-for="@Model.BusinessRoles[i].MinimumRequired" class="form-control" type="number" />
+                                    <span asp-validation-for="@Model.BusinessRoles[i].MinimumRequired" class="text-danger"></span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="space40"></div>
+                <div class="row inner-row">
+                    <div class="col-md-3 pull-right">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-info">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+</section>

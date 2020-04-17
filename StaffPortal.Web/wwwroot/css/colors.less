@@ -1,0 +1,86 @@
+﻿// Leave Requests Panel Heading Colors
+
+@main-color: hsl(216, 45%, 38%);
+
+/*@main-color: rgba(236, 41, 34, 1);*/
+
+//hsl(210°, 75, 63)
+@smooth-main: lighten(saturate(spin(@main-color, -6), 30%), 25%);
+
+// HSL(212°, 100, 75)
+@light-main: lighten(saturate(spin(@main-color, -4), 55%), 37%);
+
+// HSL(214°, 73, 36)
+@saturated-main: lighten(saturate(spin(@main-color, -2), 28%), -2%);
+
+// HSL(203°, 100, 51)
+@smooth-smain: lighten(saturate(spin(@main-color, -11), 60%), 5%);
+
+// HSL(198°, 100, 50)
+@light-smain: lighten(saturate(spin(@main-color, -16), 50%), 5%);
+@darker-main: darken(@main-color, 20%);
+
+@btn-main: #589fe7;
+
+.main-color {
+    background-color: @main-color;
+}
+
+.darker-main {
+    background-color: @darker-main;
+}
+
+.saturated-main {
+    background-color: @saturated-main;
+}
+
+.smooth-main {
+    background-color: @smooth-main;
+}
+
+.light-main {
+    background-color: @light-main;
+}
+
+.smooth-smain {
+    background-color: @smooth-smain;
+}
+
+.light-smain {
+    background-color: @light-smain;
+}
+
+div.color {
+    width: 100%;
+    padding: 20px;
+    font-weight: 700;
+    font-size: 22px;
+    color: #c6c6c6;
+}
+
+
+@muted-color: #e4e4e4;
+@text: #333;
+@panel-heading: #2875c7;
+@danger: rgba(255, 85, 85, 1);
+@danger-highlight: rgba(236, 41, 34, 1);
+@light-danger: #ffdfdf;
+@smooth-danger: #ff9d9d;
+
+@success: #3a8f31;
+@success-highlight: rgba(37, 86, 37, 1);
+@light-success: lighten(@success, 40%);
+
+@warning: #c8a111;
+@dark-warning: #9f9057;
+@light-warning: #e2dab8;
+
+// Calendar Coded Day Colors
+/*
+    .critical - below department minimum staff level or mininum required role is zero
+    .decent - minimum required role is zero but above department mininum staff level
+    .acceptable - none of the above
+*/
+@critical: #f58aa8;
+@decent: #fff5d6;
+@acceptable: #a7d54e;

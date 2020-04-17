@@ -1,0 +1,32 @@
+﻿<div class="header">
+    <i class="fa fa-angle-left" ng-click="previous()"></i>
+    <span>{{month.clone().day(1).format("MMMM DD")}} - {{month.clone().day(7).format("MMMM DD")}}</span>
+    <i class="fa fa-angle-right" ng-click="next()"></i>
+</div>
+
+<div class="week hidden-xs">
+    <div class="day">Role</div>
+    <div class="day">Department</div>
+    <div class="day" ng-class="{ today: day.isToday, 'different-month': !day.isCurrentMonth }"
+         ng-repeat="day in weeks.days"
+         uib-popover="{{day.day.status}}" popover-trigger="'mouseenter'">
+        {{day.day.name}} {{day.day.number}}
+    </div>
+</div>
+
+<div class="rota bg-overlay color-overlay" ng-class="{ 'is-busy bg-overlay color-overlay' : isBusy }">
+    <wait-cursor ng-show="isBusy"></wait-cursor>
+    <div class="rota-row" ng-repeat="group in data.businessRole_Employees">
+
+        <div class="working-day">{{group.businessRole.name}}</div>
+        <div class="working-day">{{group.departmentName}}</div>
+
+        <div class="working-day" ng-class="{ today: day.day.isToday, 'different-month': !day.day.isCurrentMonth }"
+             ng-repeat="day in group.employeesOnShift[0].daysWorking">
+            <div ng-show="day.isOnHoliday" class="notification" uib-popover="{{day.leaveTypeName}}" popover-trigger="'mouseenter'">
+                <div class="triangle">{{weeks.days[$index].status}}</div>
+            </div>
+            <span class="working-time" ng-show="day.isAssigned && weeks.selectedDepartment.id == day.departmentId">{{day.startTime}}-{{day.endTime}}</span>
+        </div>
+    </div>
+</div>

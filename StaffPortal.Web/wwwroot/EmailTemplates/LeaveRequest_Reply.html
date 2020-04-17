@@ -1,0 +1,57 @@
+﻿<html>
+<head>
+    <style>
+        body.accepted {
+            width: 640px;
+            font-family: Lato;
+            font-size: 14px;
+            border: 1px solid #4cff00;
+            padding: 20px;
+        }
+
+        body.rejected {
+            width: 640px;
+            font-family: Lato;
+            font-size: 14px;
+            border: 1px solid #ff0000;
+            padding: 20px;
+        }
+
+        p {
+            line-height: 150%;
+        }
+
+        .details-table {
+            border: 1px solid rgba(0, 139, 139, 0.2);
+        }
+
+        .td-header {
+            background-color: rgba(0, 139, 139, 0.2);
+            color: rgba(0, 139, 139, 0.7);
+        }
+    </style>
+
+</head>
+<body class="@@Outcome">
+    <h3>Staff Portal - Your Leave Request has been @@Outcome</h3>
+    <p>
+        Hi @@FirstName @@LastName - @@BusinessRoleName,<br />
+        Your Leave Request has been @@Outcome!
+    </p>
+
+    <h4>Leave Request Details:</h4>
+
+    <table class="details-table" width="640" cellpadding="5" cellspacing="0">
+        <tr>
+            <td class="td-header"><font size="-1"><b>Customer</b></font></td>
+            <td class="td-header"><font size="-1"><b>Service</b></font></td>
+            <td class="td-header"><font size="-1"><b>Date</b></font></td>
+        </tr>
+        <tr>
+            <td width="302" valign="top">@@ApplicantName</td>
+            <td width="255" valign="top">@@LeaveTypeName</td>
+            <td width="220" valign="top">@@RequestedDateTime</td>
+        </tr>
+    </table>
+</body>
+</html>

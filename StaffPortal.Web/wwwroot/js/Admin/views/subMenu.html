@@ -1,0 +1,6 @@
+﻿<ul class="dropdown-menu">
+    <li ng-repeat="item in items" ng-cloak ng-class="item.childrenBusinessRoles.length > 0 ? 'sub-dropdown' : ''" class="clickable">
+        <span ng-bind="item.name" ng-click="selectItem(item, $event)"></span>
+        <sub-menu items="item.childrenBusinessRoles" ng-show="item.childrenBusinessRoles.length > 0"></sub-menu>
+    </li>
+</ul>

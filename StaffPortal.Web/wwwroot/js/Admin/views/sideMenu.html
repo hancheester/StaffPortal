@@ -1,0 +1,7 @@
+﻿<ul class="nav side-menu">
+    <li><div class="title-line" style="width: 80%; transform: matrix(1, 0, 0, 1, 0, 0);"></div>Business Roles</li>
+    <li  ng-repeat="item in items" ng-cloak ng-class="item.childrenBusinessRoles.length > 0 ? 'sub-dropdown' : ''" class="clickable">
+        <span ng-click="selectItem(item, $event)">{{item.name}}</span>
+        <sub-menu items="item.childrenBusinessRoles" ng-show="item.childrenBusinessRoles.length > 0"></sub-menu>
+    </li>
+</ul>

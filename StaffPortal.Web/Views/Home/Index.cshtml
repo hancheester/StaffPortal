@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@section Styles {
+    <link href="~/js/dashboard/card-my-leave-request.component.css" rel="stylesheet" asp-append-version="true" />
+    <style>
+        [draggable] {
+            -moz-user-select: none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+            /* Required to make elements draggable in old WebKit */
+            -khtml-user-drag: element;
+            -webkit-user-drag: element;
+        }
+
+        .box .panel {
+            margin-bottom: 0;
+        }
+
+        .box.empty {
+            min-height: 100px;
+        }
+
+        .box.source {
+            opacity: 0.4;
+        }
+
+        .box.over {
+            border: 2px dashed #aaa;
+        }
+
+        .box.drag * {
+            pointer-events: none;
+        }
+
+        .box.gap.over {
+            height: 30px;
+        }
+
+        .box.gap {
+            height: 20px;
+        }
+
+        card {
+            display: block;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="~/js/dashboard/dashboard.component.js" asp-append-version="true"></script>
+    <script src="~/js/dashboard/card.component.js" asp-append-version="true"></script>
+    <script src="~/js/dashboard/card-leave-quota.component.js" asp-append-version="true"></script>
+    <script src="~/js/dashboard/card-my-calendar.component.js" asp-append-version="false"></script>
+    <script src="~/js/dashboard/card-my-leave-request.component.js" asp-append-version="true"></script>
+    <script src="~/js/components/wait-cursor.directive.js" asp-append-version="true"></script>
+    <script src="~/js/datepicker.decorator.js"></script>
+}
+
+<div ng-app="app">
+    <dashboard></dashboard>
+</div>

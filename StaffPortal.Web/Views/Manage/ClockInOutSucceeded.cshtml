@@ -1,0 +1,38 @@
+﻿@model StaffPortal.Web.Models.ClocktimeViewModel
+
+
+@{
+    ViewBag.Title = "Succeeded";
+    Layout = "_BoxLayout";
+}
+
+<div class="account">
+    <div id="register" class="container">
+        <div class="middle-box text-center loginscreen animated fadeIn">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <img class="img-responsive" src="~/images/Logo.png" />
+                    <hr />
+
+                    <h3>Hello <strong class="sp-strong">@Model.FirstName</strong> @Model.LastName</h3>
+
+                    @if (Model.IsClockIn)
+                    {
+                        <h4>You just Clocked <strong class="sp-strong">In</strong></h4>
+                    }
+                    else
+                    {
+                        <h4>You just Clocked <strong class="sp-strong">Out</strong></h4>
+                    }
+                    <h4>@Model.Timestamp.ToString("ddd dd MMM, HH:mm")</h4>
+
+                    <div class="title-line" style="width: 60%; transform: matrix(1, 0, 0, 1, 0, 0);"></div>
+                </div>
+            </div>
+            <div class="space30"></div>
+            <span><a asp-controller="Home" asp-action="Index"><i class="fa fa-chevron-circle-left"></i> back to your Dashboard</a></span>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,129 @@
+﻿@{
+    ViewData["Title"] = "New Department";
+}
+
+@section Scripts{
+    <script src="~/js/department/department.controller.js" asp-append-version="true"></script>
+}
+
+<div ng-app="app" ng-controller="DepartmentController as vm">
+    <h1>New Department <a href="/Manage/Departments"><small>back to list</small></a></h1>
+    <form class="form-horizontal" name="departmentForm" novalidate>
+        <div class="form-group">
+            <label class="control-label col-md-3">Name *</label>
+            <div class="col-md-6">
+                <input class="form-control" id="Name" name="Name" placeholder="Name" ng-model="vm.department.name" required />
+                <p class="text-danger"
+                   ng-show="departmentForm.Name.$error.required && (departmentForm.Name.$dirty || departmentForm.Name.$touched)"
+                   ng-cloak>
+                    Required
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Minimum Staff *</label>
+            <div class="col-md-6">
+                <input class="form-control" id="MinimumRequired" name="MinimumRequired" placeholder="Minimum staff in number" type="number" min="0" ng-model="vm.department.minimumRequired" required />
+                <p class="text-danger"
+                   ng-show="departmentForm.MinimumRequired.$error.required && (departmentForm.MinimumRequired.$dirty || departmentForm.MinimumRequired.$touched)"
+                   ng-cloak>
+                    Required
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Opening Hours</label>
+            <div class="col-md-6">
+                <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Open For Business</th>
+                            <th>Opening Time</th>
+                            <th>Closing Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat-start="openingHour in vm.department.openingHours">
+                            <td>{{openingHour.day}}</td>
+                            <td>
+                                <input type="checkbox" ng-model="openingHour.isOpen" />
+                            </td>
+                            <td>
+                                <div uib-timepicker
+                                     ng-model="openingHour.openingTime"
+                                     name="openingTime{{$index}}"
+                                     id="openingTime{{$index}}"
+                                     hour-step="1" minute-step="5" show-meridian="false"
+                                     ng-disabled="!openingHour.isOpen">
+                                </div>
+                            </td>
+                            <td>
+                                <div uib-timepicker
+                                     ng-model="openingHour.closingTime"
+                                     name="closingTime{{$index}}"
+                                     id="closingTime{{$index}}"
+                                     hour-step="1" minute-step="5" show-meridian="false"
+                                     ng-disabled="!openingHour.isOpen">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-repeat-end ng-show="openingHour.closingTime < openingHour.openingTime" ng-cloak>
+                            <td colspan="4">
+                                <p class="text-danger">Closing time should be later than opening time.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Required Staff</label>
+            <div class="col-md-6">
+                <table class="table table-responsive table-striped" ng-cloak>
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                            <th>Show On Rota</th>
+                            <th>Minimum Required</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat-start="role in vm.roles">
+                            <td>{{role.name}}</td>
+                            <td><input type="checkbox" ng-model="role.showOnRota" /></td>
+                            <td>
+                                <input type="number" min="0" class="form-control"
+                                       name="minimumRequired{{$index}}"
+                                       ng-model="role.minimumRota" 
+                                       ng-required="role.showOnRota"
+                                       ng-disabled="!role.showOnRota"
+                                       ng-min="1"
+                                       ng-max="999"/>
+                            </td>
+                        </tr>
+                        <tr ng-repeat-end
+                            ng-show="departmentForm.minimumRequired{{$index}}.$error.required || departmentForm.minimumRequired{{$index}}.$error.number || departmentForm.minimumRequired{{$index}}.$error.min"
+                            ng-cloak>
+                            <td colspan="3">
+                                <p class="text-danger" ng-show="departmentForm.minimumRequired{{$index}}.$error.required">Minimum staff number required.</p>
+                                <p class="text-danger" ng-show="departmentForm.minimumRequired{{$index}}.$error.min">A number higher than 0 is required.</p>
+                                <p class="text-danger" ng-show="departmentForm.minimumRequired{{$index}}.$error.number">Not a valid number.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="text-right">
+            <button class="btn btn-info" ng-disabled="departmentForm.$invalid || vm.isBusy" ng-click="vm.create()">
+                {{ vm.isBusy ? "Creating..." : "Create" }}
+            </button>
+        </div>
+
+    </form>
+</div>

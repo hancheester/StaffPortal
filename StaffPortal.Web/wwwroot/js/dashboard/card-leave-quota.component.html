@@ -1,0 +1,26 @@
+﻿<div class="panel panel-default" draggable="false">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{vm.title}}</h3>
+    </div>
+    <div class="panel-body">
+        <wait-cursor ng-show="vm.isBusy"></wait-cursor>
+        <div class="col-xs-6">
+            <canvas id="total" class="chart chart-doughnut"
+                    chart-data="vm.leaveQuotaTotalChart.data"
+                    chart-labels="vm.leaveQuotaTotalChart.labels"
+                    chart-options="vm.leaveQuotaTotalChart.options"
+                    chart-colors="vm.leaveQuotaTotalChart.colors"
+                    width="150"
+                    height="150"></canvas>
+        </div>
+        <div class="col-xs-6">
+            <canvas id="total" class="chart chart-doughnut"
+                    chart-data="vm.leaveQuotaChart.data"
+                    chart-labels="vm.leaveQuotaChart.labels"
+                    chart-options="vm.leaveQuotaChart.options"
+                    chart-colors="vm.leaveQuotaChart.colors"
+                    width="150"
+                    height="150"></canvas>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+﻿@using StaffPortal.Web.Models.AccountViewModels
+
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Log in";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HR Pharm | Staff Portal</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+
+<body class="body">
+
+    <div class="account">
+        <div class="container">
+            <div class="middle-box text-center loginscreen animated fadeInDown">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        @await Component.InvokeAsync("Logo")
+
+                        <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                            <hr />
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><img src="~/images/email_ico.png" /></span>
+                                    <input asp-for="Username" class="form-control" placeholder="Email Address" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><img src="~/images/psw_ico.png" /></span>
+                                    <input asp-for="Password" class="form-control" placeholder="Password" />
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-info">Log in</button>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="col-md-6"><a class="btn btn-default" asp-action="ForgotPassword">Forgot your password?</a></div>
+                                <div class="col-md-6"><a class="btn btn-default" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]">Register as a new user?</a></div>
+                            </div>
+                        </form>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+        <div class="container text-center space30">
+            <a asp-action="#" class="text-muted">Terms of Service</a> | <a asp-action="#" class="text-muted">Privacy Policy</a>
+        </div>
+
+    </div>
+</body>
+
+
+</html>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

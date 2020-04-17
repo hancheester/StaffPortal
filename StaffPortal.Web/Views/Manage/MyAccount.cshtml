@@ -1,0 +1,145 @@
+﻿@model int
+@{
+    ViewData["Title"] = "My Account";
+}
+
+@section Scripts {
+    <script src="~/js/components/equal.directive.js" asp-append-version="true"></script>
+    <script src="~/js/employee/my-account.controller.js" asp-append-version="true"></script>
+}
+
+<div ng-app="app" ng-init="init(@Model)" ng-controller="MyAccountController as vm">
+    <h1>My Account</h1>    
+    <form class="form-horizontal" name="accountForm" novalidate role="form" ng-cloak>
+        <div class="form-group">
+            <label class="control-label col-md-3">First Name *</label>
+            <div class="col-md-6">
+                <input class="form-control" id="firstName" name="firstName" placeholder="First Name" ng-model="vm.employee.firstName" required />
+                <p class="text-danger" ng-show="accountForm.firstName.$error.required && accountForm.firstName.$dirty" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Last Name *</label>
+            <div class="col-md-6">
+                <input class="form-control" id="lastName" name="lastName" placeholder="Last Name" ng-model="vm.employee.lastName" required />
+                <p class="text-danger" ng-show="accountForm.lastName.$error.required && accountForm.lastName.$dirty" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Phone Number *</label>
+            <div class="col-md-6">
+                <input class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone Number" ng-model="vm.employee.phoneNumber" required />
+                <p class="text-danger" ng-show="accountForm.phoneNumber.$error.required && accountForm.phoneNumber.$dirty" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Gender </label>
+            <div class="col-md-6">
+                <select class="form-control" id="userGender" name="userGender" ng-model="vm.employee.gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Email *</label>
+            <div class="col-md-6">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email" ng-model="vm.employee.email" required />
+                <p class="text-danger" ng-show="accountForm.email.$error.required && accountForm.email.$dirty" ng-cloak>Required</p>
+                <p class="text-danger" ng-show="accountForm.$error.email && accountForm.email.$dirty" ng-cloak>Invalid format</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Username *</label>
+            <div class="col-md-6">
+                <input class="form-control" ng-model="vm.employee.userName" disabled />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Password *</label>
+            <div class="col-md-6">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="vm.employee.password" />
+                <p class="text-danger" ng-show="accountForm.password.$error.required && accountForm.repeatPassword.$dirty" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Confirm Password *</label>
+            <div class="col-md-6">
+                <input type="password"
+                       class="form-control"
+                       id="repeatPassword"
+                       name="repeatPassword"
+                       placeholder="Confirm Password"
+                       ng-model="vm.employee.repeatPassword"
+                       ng-required="vm.employee.password"
+                       equal="{{vm.employee.password}}" />
+                <p class="text-danger" ng-show="accountForm.repeatPassword.$error.required && accountForm.repeatPassword.$dirty" ng-cloak>Required</p>
+                <p class="text-danger" ng-show="accountForm.repeatPassword.$error.equal && accountForm.repeatPassword.$dirty" ng-cloak>Do not match</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">National Insurance Number *</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="nin" name="nin" placeholder="NIN" required
+                       ng-model="vm.employee.nin" />
+                <p class="text-danger" ng-show="accountForm.nin.$error.required && accountForm.nin.$dirty" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <fieldset id="workingDays">
+            <legend>Days Working</legend> <i></i>
+            <div class="col-md-9 col-md-offset-3 col-xs-12 col-xs-offset-0">
+                <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Day</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="workingDay in vm.employee.workingDays">
+                            <td>
+                                <i ng-show="workingDay.isAssigned" class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                                <i ng-show="!workingDay.isAssigned" class="fa fa-circle-o" aria-hidden="true"></i>
+                            </td>
+                            <td>
+                                {{workingDay.day}}
+                            </td>
+                            <td>
+                                {{workingDay.isAssigned ? workingDay.startTime : ''}}
+                            </td>
+                            <td>
+                                {{workingDay.isAssigned ? workingDay.endTime : ''}}
+                            </td>
+                            <td>
+                                {{workingDay.isAssigned ? workingDay.department.name : ''}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+        <div class="text-right">
+            <button class="btn btn-info" ng-disabled="accountForm.$invalid || vm.isBusy" ng-click="vm.update()">
+                {{ vm.isBusy ? "Updating..." : "Update" }}
+            </button>
+        </div>
+
+        @*<div>
+            {{accountForm.$error}}
+        </div>*@
+    </form>
+</div>

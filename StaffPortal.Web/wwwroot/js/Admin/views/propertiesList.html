@@ -1,0 +1,11 @@
+﻿<div class="col-xs-12" ng-repeat="property in properties" ng-cloak>
+    <div class="form-group pull-left">
+        <div class="checkbox">
+            <label class="chk-container" ng-cloak>
+                <input type="checkbox" for="property.name" ng-model="property.isAllowed" ng-change="updateProperty(property)"/>
+                <span class="checkmark" ></span>
+                {{property.name}}
+            </label>
+        </div>
+    </div>
+</div>

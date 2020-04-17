@@ -1,0 +1,143 @@
+﻿<div class="container" ng-controller="editAnnouncementCtrl">
+
+    <div class="col-sm-8 col-sm-offset-2">
+        <h2>Training Modules</h2>
+
+        <!-- COMPANY INFO -->
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="#/" class="btn btn-default"><i class="fa fa-angle-left"></i> Back</a>
+                </div>
+            </div>
+
+            <div class="space20"></div>
+            <form class="form-horizontal" id="announcementForm" name="announcementForm" novalidate role="form">
+                <button class="btn btn-danger" ng-click="mockAnnouncement()">Fill Announcement Data</button>
+                <div class="space40"></div>
+
+                <div class="form-group" ng-class="{ 'has-error' : announcementForm.title.$error.required && (announcementForm.title.$dirty || announcementForm.title.$touched) }" ng-cloak>
+                    <label class="control-label col-sm-2">Title *</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" id="title" name="title" placeholder="Title" ng-model="announcement.title" required />
+                        <p class="text-danger" ng-show="announcementForm.title.$error.required && (announcementForm.title.$dirty || announcementForm.title.$touched)" ng-cloak>Title is required</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Date *</label>
+                    <div class="col-sm-10">
+                        <div class="form-group" ng-class="{ 'has-error' : announcementForm.date.$error.required && (announcementForm.title.$dirty || announcementForm.title.$touched)}" ng-cloak>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="date" id="date" uib-datepicker-popup="{{format}}"
+                                           ng-model="announcement.date" is-open="popup1.opened" datepicker-options="dateOptions"
+                                           close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" required />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                                <p class="text-danger" ng-show="announcementForm.date.$error.required && (announcementForm.title.$dirty || announcementForm.title.$touched)" ng-cloak>Date is required</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : announcementForm.body.$error.required && (announcementForm.body.$dirty || announcementForm.body.$touched) }" ng-cloak>
+                    <label class="control-label col-sm-2">Body *</label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" id="body" name="body" placeholder="Body" ng-model="announcement.body" required />
+                        <p class="text-danger" ng-show="announcementForm.body.$error.required && (announcementForm.body.$dirty || announcementForm.body.$touched)" ng-cloak>body is required</p>
+                    </div>
+                </div>
+
+                <!-- SEARCH RECIPIENTS -->
+                <div class="row listing listing-striped">
+                    <div class="listing-title">
+                        <h4>Search <strong class="sp-strong">Recipients</strong></h4>
+                    </div>
+                    <div class="listing-container col-sm-3">
+                        <div class="row listing-header">
+                            <div class="col-sm-3">
+                                Roles
+                            </div>
+                            <div class="col-sm-9"></div>
+                        </div>
+                        <div class="row listing-row selectable" ng-cloak ng-repeat="role in businessRoles" 
+                             ng-class="{'selected' : role.isSelected}">
+                            <div class="col-sm-12" ng-click="toggleRole($index, $event)">
+                                {{ role.name }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="listing-container col-sm-3">
+                        <div class="row listing-header">
+                            <div class="col-sm-3">
+                                Departments
+                            </div>
+                            <div class="col-sm-9"></div>
+                        </div>
+                        <div class="row listing-row selectable" ng-cloak ng-repeat="department in departments" 
+                             ng-class="{'selected' : department.isSelected}">
+                            <div class="col-sm-12" ng-click="toggleDepartment($index, $event)">
+                                {{ department.name }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-default" ng-click="addRecipients()">Add Recipients</button>
+                <!-- END SEARCH RECIPIENTS -->
+
+                <!-- RECIPIENTS LISTING -->
+                <div class="row listing listing-striped space40">
+                    <div class="listing-title">
+                        <h4><strong class="sp-strong">Recipients</strong></h4>
+                    </div>
+                    <div class="listing-container col-sm-6">
+                        <div class="row listing-header">
+                            <div class="col-sm-6">
+                                Name
+                            </div>
+                            <div class="col-sm-6"></div>
+                        </div>
+                        <div class="row listing-row" ng-cloak ng-repeat="recipient in announcement.recipients">
+                            <div class="col-sm-6">
+                                {{ recipient.firstName }} {{ recipient.lastName }}
+                            </div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-remove" ng-click="removeRecipient()">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- END RECIPIENTS LISTING -->
+                <div class="col-sm-12" ng-show="errMessages.length > 0">
+                    <div class="alert alert-danger alert-dismissible col-sm-6">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>ERROR!</strong>
+                        <ul class="list-danger">
+                            <li ng-repeat="errMessage in errMessages">
+                                {{errMessage}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space40"></div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="form-group pull-right">
+                            <a href="#/" class="btn btn-default"><i class="fa fa-angle-left"></i> Back</a>
+                            <button class="btn btn-default" ng-click="removeSession()">Remove Session </button>
+                            <button class="btn btn-default" ng-click="retrieveTempFiles()">Retrieve Temp</button>
+                            <button class="btn btn-infon" ng-click="saveAnnouncement(announcementForm, announcement)">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

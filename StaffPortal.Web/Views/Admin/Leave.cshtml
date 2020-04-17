@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Pending Leave Request";
+}
+
+@section Styles {
+    <link href="~/css/calendar.min.css" rel="stylesheet" />
+    @*<link href="~/css/leave.css" rel="stylesheet" />*@
+    <link href="~/lib/angular-notify/dist/angular-notify.min.css" rel="stylesheet" />
+    <link href="~/lib/angular-bootstrap/ui-bootstrap-csp.css" rel="stylesheet" />
+}
+
+@section Scripts{
+    <script src="~/lib/chart.js/dist/Chart.min.js"></script>
+    <script src="~/lib/angular-chart.js/dist/angular-chart.min.js"></script>
+    <script src="~/js/Manage/manage-app.js"></script>    
+    <script src="~/js/leave/leave-approval.controller.js" asp-append-version="true"></script>
+    <script src="~/js/Manage/controllers/rejectedRequestsCtrl.js" asp-append-version="true"></script>
+    <script src="~/js/components/calendar.directive.js" asp-append-version="true"></script>
+}
+
+<div class="container" ng-app="manage-app">
+    <div ng-view></div>
+</div>

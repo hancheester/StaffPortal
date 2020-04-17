@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Employees";
+}
+
+@section Styles {
+    <link href="~/lib/angular-notify/angular-notify.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
+}
+
+@section Scripts {
+    <!-- Date Picker -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/js/employee/employees.controller.js" asp-append-version="true"></script>
+}
+
+<div ng-app="app" ng-controller="EmployeesController as vm" ng-cloak>
+    <h1>Employees</h1>    
+    <table class="table table-responsive table-striped">
+        <thead>
+            <tr>
+                <th>
+                    ID<br />
+                    <input class="form-control" type="text" ng-keydown="vm.submitOnEnter($event)" ng-model="vm.query.id" />
+                </th>
+                <th>
+                    First Name<br />
+                    <input class="form-control" type="text" ng-keydown="vm.submitOnEnter($event)" ng-model="vm.query.firstName" />
+                </th>
+                <th>
+                    Last Name<br />
+                    <input class="form-control" type="text" ng-keydown="vm.submitOnEnter($event)" ng-model="vm.query.lastName" />
+                </th>
+                <th>
+                    Email<br />
+                    <input class="form-control" type="text" ng-keydown="vm.submitOnEnter($event)" ng-model="vm.query.email" />
+                </th>
+                <th>
+                    <button class="btn btn-info" ng-click="vm.clearFilters()">Reset</button>
+                    <a class="btn btn-info" href="/Manage/NewEmployee">Create</a>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="employee in vm.employees">
+                <td>{{ employee.id }}</td>
+                <td>{{ employee.firstName }}</td>
+                <td>{{ employee.lastName }}</td>
+                <td>{{ employee.user.email }}</td>
+                <td>
+                    <a href="/Manage/Employee/{{employee.id}}" class="btn btn-info">Edit</a>
+                    <a href="#" class="btn btn-info" ng-click="vm.remove($index)">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <ul uib-pagination
+        ng-model="vm.currentPage"
+        total-items="vm.totalItems"
+        items-per-page="vm.pageSize"
+        class="pagination-sm"
+        boundary-link-numbers="true"
+        rotate="false"></ul>
+</div>

@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Training";
+}
+
+@section scripts{
+    <script src="~/js/Admin/admin_training-app.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload-shim.min.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+    <script src="~/js/Admin/admin-app.js"></script>
+    <script src="~/js/Admin/controllers/trainingCtrl.js" asp-append-version="true"></script>
+    <script src="~/js/Admin/controllers/editModuleCtrl.js" asp-append-version="true"></script>
+    <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/lib/angular-notify/angular-notify.js"></script>
+
+    <script>
+        $('#myTab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+    </script>
+}
+
+@section Styles {
+    <link href="~/lib/angular-notify/angular-notify.css" rel="stylesheet" />
+}
+
+<section ng-app="admin_training-app">
+    <div ng-view></div>
+</section>

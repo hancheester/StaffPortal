@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewData["Title"] = "EditAccount";
+}
+
+@section Styles {
+    <link href="~/lib/angular-notify/angular-notify.css" rel="stylesheet" />
+}
+
+@section scripts {
+    <script src="~/lib/chart.js/dist/Chart.min.js"></script>
+    <script src="~/lib/angular-chart.js/dist/angular-chart.min.js"></script>
+    <script src="~/js/Manage/manage-app.js"></script>
+    <script src="~/js/Manage/controllers/editAccountCtrl.js" asp-append-version="true"></script>
+}
+
+<div class="container" ng-app="manage-app" ng-init="init(@Model)" ng-controller="editAccountCtrl">
+    <h1>My Account</h1>
+    <wait-cursor ng-show="isBusy"></wait-cursor>
+
+    <form class="form-horizontal" ng-show="!isBusy" name="editAccountForm" novalidate role="form">        
+        <div class="space40"></div>
+
+        <div class="form-group" ng-class="{ 'has-error' : editAccountForm.FirstName.$error.required && editAccountForm.FirstName.$dirty }" ng-cloak>
+            <label class="control-label col-sm-3">First Name *</label>
+            <div class="col-sm-6">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input class="form-control" id="FirstName" name="FirstName" placeholder="First Name" ng-model="employee.user.firstName" required />
+                <p class="text-danger" ng-show="editAccountForm.FirstName.$error.required && editAccountForm.FirstName.$dirty" ng-cloak>First Name is required</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : editAccountForm.LastName.$error.required && editAccountForm.LastName.$dirty }" ng-cloak>
+            <label class="control-label col-sm-3">Last Name *</label>
+            <div class="col-sm-6">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input class="form-control" id="LastName" name="LastName" placeholder="Last Name" ng-model="employee.user.lastName" required />
+                <p class="text-danger" ng-show="editAccountForm.LastName.$error.required && editAccountForm.LastName.$dirty" ng-cloak>Last Name is required</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : editAccountForm.PhoneNumber.$error.required && editAccountForm.PhoneNumber.$dirty }" ng-cloak>
+            <label class="control-label col-sm-3">Phone Number *</label>
+            <div class="col-sm-6">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Phone Number" ng-model="employee.user.phoneNumber" required />
+                <p class="text-danger" ng-show="editAccountForm.PhoneNumber.$error.required && editAccountForm.PhoneNumber.$dirty" ng-cloak>Phone Number is required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3">Gender </label>
+            <div class="col-sm-6">
+                <select class="form-control form_control_txt txt_italic" id="userGender" name="userGender" ng-model="employee.user.gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : editAccountForm.email.$error.required && editAccountForm.email.$dirty || editAccountForm.$error.email  }" ng-cloak>
+            <label class="control-label col-sm-3">Email address *</label>
+            <div class="col-sm-6">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email" ng-model="employee.user.email" required />
+                <p class="text-danger" ng-show="editAccountForm.email.$error.required && editAccountForm.email.$dirty" ng-cloak>Email address is required</p>
+                <p class="text-danger" ng-show="editAccountForm.$error.email && editAccountForm.email.$dirty" ng-cloak>Not a valid format</p>
+            </div>
+        </div>
+
+        @*<div class="form-group" ng-cloak>
+                <label class="control-label col-sm-3">Date Of Birth </label>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="dob" id="dob" uib-datepicker-popup="{{format}}"
+                               ng-model="employee.dob" is-open="popupDOB.opened" datepicker-options="datePickerOptions"
+                               close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="openDOB()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>*@
+
+        <div class="form-group">
+            <label class="control-label col-sm-3">Username *</label>
+            <div class="col-sm-6">
+                <input class="form-control" ng-model="employee.user.userName" disabled />
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : editAccountForm.password.$error.required && editAccountForm.password.$dirty }" ng-cloak>
+            <label class="control-label col-sm-3">Password *</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="employee.password" />
+                <p class="text-danger" ng-show="editAccountForm.password.$error.required && editAccountForm.repeatPassword.$dirty " ng-cloak>Username is required</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : editAccountForm.repeatPassword.$error.required && editAccountForm.repeatPassword.$dirty }" ng-cloak>
+            <label class="control-label col-sm-3">Confirm Password *</label>
+            <div class="col-sm-6">
+                <input type="password" class="form-control" id="repeatPassword" name="repeatPassword" placeholder="Confirm Password" ng-model="employee.repeatPassword" />
+                <p class="text-danger" ng-show="editAccountForm.repeatPassword.$error.required && editAccountForm.repeatPassword.$dirty" ng-cloak>Confirm Password is required</p>
+                <p class="text-danger" ng-show="editAccountForm.repeatPassword.$error.pswMatch && editAccountForm.repeatPassword.$dirty" ng-cloak>The provided Passwords do not match</p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-class="{ 'has-error' : editAccountForm.nin.$error.required && editAccountForm.nin.$dirty }" ng-cloak>
+            <label class="control-label col-sm-3">National Insurance Number *</label>
+            <div class="col-sm-6">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <input type="text" class="form-control" id="nin" name="nin" placeholder="NIN" required
+                       ng-model="employee.nin"
+                       ng-pattern="/^\s*[a-zA-Z]{2}(?:\s*\d\s*){6}[a-zA-Z]?\s*$/" />
+                <p class="text-danger" ng-show="editAccountForm.nin.$error.required && editAccountForm.nin.$dirty" ng-cloak>NIN is required</p>
+                <p class="text-danger" ng-show="editAccountForm.nin.$error.pattern && editAccountForm.nin.$dirty" ng-cloak>Not a valid format</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-3 text-muted">Barcode on ID card *</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" ng-model="employee.barcode" disabled />
+            </div>
+        </div>
+
+        <fieldset id="workingDays">
+            <legend>Days Working</legend> <i></i>
+            <div class="col-sm-9 col-sm-offset-3 col-xs-12 col-xs-offset-0">
+                <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Day</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="workingDay in employee.daysWorking">
+                            <td>
+                                <div class="checkbox">
+                                    <label class="chk-container">
+                                        <input type="checkbox" ng-model="workingDay.isAssigned" ng-change="workingDay.selectedOption = null" disabled />
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>
+                                <h4>{{workingDay.day}}</h4>
+                            </td>
+                            <td>
+                                <div>
+                                    <h4>{{momentFormat(workingDay.startTime, "HH:mm")}}</h4>
+                                </div>
+                            </td>
+                            <td>
+                                <h4>{{momentFormat(workingDay.endTime, "HH:mm")}}</h4>
+                            </td>
+                            <td>
+                                <h4>{{toDepName(workingDay.departmentId)}}</h4>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+        <div class="col-sm-12" ng-show="errorMessages.length > 0">
+            <div class="alert alert-danger alert-dismissible col-sm-6">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>ERROR!</strong>
+                <ul class="list-danger">
+                    <li ng-repeat="errMessage in errorMessages">
+                        {{errMessage}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="space40"></div>
+        <div class="row">
+            <div class="col-md-3 pull-right">
+                <div class="form-group">
+                    <button class="btn btn-info" ng-click="saveChanges()" ng-disabled="editAccountForm.$invalid">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

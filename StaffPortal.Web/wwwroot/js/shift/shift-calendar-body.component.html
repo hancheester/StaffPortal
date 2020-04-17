@@ -1,0 +1,28 @@
+﻿<div class="col-md-12" ng-repeat="role in vm.roles">
+    <div class="col-md-2 role" ng-class="{ 'bg-danger': !role.isBusy && role.employees.length == 0, 'bg-info': role.isBusy || role.employees.length > 0 }">
+        {{role.name}} <i ng-show="role.isBusy" class="fa fa-spinner fa-spin"></i>
+        <small class="clearfix" ng-show="role.isRequired">minimum: {{role.minimumRequired}}</small>
+    </div>
+    <div class="col-md-10 role" ng-class="{ 'bg-danger': !role.isBusy && role.employees.length == 0, 'bg-info': role.isBusy || role.employees.length > 0 }">
+        <div class="col-md-1">&nbsp;</div>
+        <div class="col-md-1">&nbsp;</div>
+        <div class="col-md-1">&nbsp;</div>
+        <div class="col-md-1">&nbsp;</div>
+        <div class="col-md-1">&nbsp;</div>
+        <div class="col-md-1">&nbsp;</div>
+        <div class="col-md-1">&nbsp;</div>
+    </div>
+    <shift-calendar-role-staff 
+                               ng-repeat="employee in role.employees track by $index"
+                               department-id="vm.departmentId"
+                               employee-id="employee.id" 
+                               name="employee.name"
+                               role-id="role.id"
+                               role="role.name"
+                               shifts="employee.shifts"
+                               dates="vm.dates"
+                               on-get-employee-roles="vm.getEmployeeRoles()"
+                               on-change-time="vm.changeTime()"
+                               on-change-role="vm.changeRole()">
+    </shift-calendar-role-staff>
+</div>

@@ -1,0 +1,188 @@
+﻿<div class="container">
+
+    <div class="col-sm-8 col-sm-offset-2">
+        <h2>Training Modules</h2>
+
+        <!-- COMPANY INFO -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="#/" class="btn btn-default"><i class="fa fa-angle-left"></i> Back</a>
+                </div>
+            </div>
+            <div class="space20"></div>
+            <form class="form-horizontal" id="trainingModuleForm" name="trainingModuleForm" novalidate role="form">
+
+                <button class="btn btn-danger" ng-click="mockTrainingModule()">Fill Module Data</button>
+                <div class="space40"></div>
+
+                <div class="form-group" ng-class="{ 'has-error' : trainingModuleForm.topicName.$error.required && (trainingModuleForm.topicName.$dirty || trainingModuleForm.topicName.$touched) }" ng-cloak>
+                    <label class="control-label col-sm-2">Topic Name *</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" id="topicName" name="topicName" placeholder="Topic Name" ng-model="trainingModule.name" required />
+                        <p class="text-danger" ng-show="trainingModuleForm.topicName.$error.required && (trainingModuleForm.topicName.$dirty || trainingModuleForm.topicName.$touched)" ng-cloak>Topic Name is required</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : trainingModuleForm.description.$error.required && (trainingModuleForm.description.$dirty || trainingModuleForm.description.$touched) }" ng-cloak>
+                    <label class="control-label col-sm-2">Description *</label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" id="description" name="description" placeholder="Description" ng-model="trainingModule.description" required></textarea>
+                        <p class="text-danger" ng-show="trainingModuleForm.description.$error.required && (trainingModuleForm.description.$dirty || trainingModuleForm.description.$touched)" ng-cloak>Description is required</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : trainingModuleForm.location.$error.required && (trainingModuleForm.location.$dirty || trainingModuleForm.location.$touched) }" ng-cloak>
+                    <label class="control-label col-sm-2">Location *</label>
+                    <div class="col-sm-6">
+                        <input class="form-control" id="location" name="location" placeholder="Location" ng-model="trainingModule.location" required />
+                        <p class="text-danger" ng-show="trainingModuleForm.location.$error.required && (trainingModuleForm.location.$dirty || trainingModuleForm.location.$touched)" ng-cloak>Location is required</p>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : trainingModuleForm.frequency.$error.required && (trainingModuleForm.frequency.$dirty || trainingModuleForm.frequency.$touched) }" ng-cloak>
+                    <label class="control-label col-sm-2">Frequency *</label>
+                    <div class="col-sm-6">
+                        <select ng-model="trainingModule.frequency" class="form-control">
+                            <option value="0">3 Months</option>
+                            <option value="1">6 Months</option>
+                            <option value="2">12 Months</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-class="{ 'has-error' : trainingModuleForm.reminder.$error.required && (trainingModuleForm.reminder.$dirty || trainingModuleForm.reminder.$touched) }" ng-cloak>
+                    <label class="control-label col-sm-2">Reminder *</label>
+                        <div class="col-sm-2">
+                            <input type="number" class="form-control" id="reminder" name="reminder" placeholder="Reminder" ng-model="reminder.duration" required />
+                            <p class="text-danger" ng-show="trainingModuleForm.reminder.$error.required && (trainingModuleForm.reminder.$dirty || trainingModuleForm.reminder.$touched)" ng-cloak>Reminder is required</p>
+                        </div>
+                        <div class="col-sm-4">
+                            <select ng-change="logModule()" ng-model="reminder.POT" class="form-control">
+                                <option value="1" selected="selected">Days</option>
+                                <option value="7">Weeks</option>
+                                <option value="30">Months</option>
+                            </select>
+                        </div>
+                </div>
+
+                <!-- TRAINING MATERIALS -->
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="form-group" ng-cloak>
+                            <label class="control-label col-sm-2">Training Materials</label>
+                            <div class="col-sm-2 col-xs-3">
+
+                                <input type="file" ngf-select ng-model="picFile" name="file"
+                                       accept="*" ngf-max-size="4MB"
+                                       ngf-model-invalid="errorFile">
+                                <div class="space30"></div>
+
+                                <img ng-show="trainingModuleForm.file.$valid" ngf-thumbnail="picFile" class="thumb">
+                                <img ng-show="!picFile" src="{{companyInfo.logoPath}}" class="thumb">
+                                <div class="space30"></div>
+                                <button class="btn btn-warning" ng-click="picFile = null" ng-show="picFile">Remove</button>
+                                <button class="btn btn-info" ng-click="uploadPic(picFile)" ng-show="picFile">Upload</button>
+
+                                <i ng-show="trainingModuleForm.file.$error.maxSize">
+                                    File too large
+                                    {{errorFile.size / 1000000|number:1}}MB: max 4M
+                                </i>
+                            </div>
+                            <div class="col-sm-12">
+                                <ul>
+                                    <li ng-repeat="filename in trainingModule.trainingMaterialsFileNames" class="col-sm-4 list-unstyled">
+                                        {{filename}}
+                                        <button class="btn btn-default pull-right" ng-click="removeImage(filename, $index)"><i class="fa fa-close"></i></button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- INVITATIONS -->
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="row space30">
+                            <label class="control-label col-sm-2 text-right">Department: </label>
+                            <div class="col-sm-3">
+                                <select class="form-control form_control_txt" id="selectedDepartment" name="selectedDepartment"
+                                        ng-model="selectedDepartment"
+                                        ng-options="department.name for department in departments track by department.id"
+                                        ng-change="getEmployees()"
+                                        ng-disabled="departments.length <= 1"></select>
+                            </div>
+
+                            <label class="control-label col-sm-1 text-right">Role: </label>
+                            <div class="col-sm-3">
+                                <select class="form-control form_control_txt" id="selectedRole" name="selectedRole"
+                                        ng-model="selectedRole"
+                                        ng-options="role.name for role in businessRoles track by role.id"
+                                        ng-change="getEmployees()"
+                                        ng-disabled="businessRoles.length <= 1"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-cloak>
+                            <label class="control-label col-sm-2">Invitations</label>
+
+                            <div class="col-sm-12">
+                                <ul class="list-info">
+                                    <li ng-repeat="employee in employees | startFrom: (currentPage - 1) * pageSize | limitTo: pageSize" class="col-sm-6 lead">
+                                        {{employee.firstName}} {{employee.lastName}}
+                                        <button class="btn btn-default pull-right" ng-click="insertInvitation(employee, $index)">Invite</button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                                boundary-link-numbers="true" rotate="false" previous-text="Prev"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PENDING INVITATIONS PANEL -->
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="form-group" ng-cloak>
+                            <label class="control-label col-sm-2">Pending Invitations</label>
+
+                            <div class="col-sm-12">
+                                <ul class="list-info">
+                                    <li ng-repeat="employee in trainingModule.invitedEmployees" class="col-sm-6 lead">
+                                        {{employee.firstName}} {{employee.lastName}}
+                                        <button class="btn btn-default pull-right" ng-click="removeInvitation(employee, $index)">Remove</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12" ng-show="errMessages.length > 0">
+                    <div class="alert alert-danger alert-dismissible col-sm-6">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>ERROR!</strong>
+                        <ul class="list-danger">
+                            <li ng-repeat="errMessage in errMessages">
+                                {{errMessage}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space40"></div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="form-group pull-right">
+                            <a href="#/" class="btn btn-default"><i class="fa fa-angle-left"></i> Back</a>
+                            <button class="btn btn-default" ng-click="removeSession()">Remove Session </button>
+                            <button class="btn btn-default" ng-click="retrieveTempFiles()">Retrieve Temp</button>
+                            <button class="btn btn-infon" ng-click="saveTrainingModule(trainingModuleForm, trainingModule)">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

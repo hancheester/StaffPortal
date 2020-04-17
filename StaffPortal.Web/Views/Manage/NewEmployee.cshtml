@@ -1,0 +1,239 @@
+﻿@{
+    ViewData["Title"] = "New Employee";
+}
+
+@section Scripts{
+    <script src="~/js/employee/employee.controller.js" asp-append-version="true"></script>
+    <script src="~/js/components/equal.directive.js" asp-append-version="true"></script>
+}
+
+<div ng-app="app" ng-controller="EmployeeController as vm">
+    <h1>New Employee <a href="/Manage/Employees"><small>back to list</small></a></h1>
+    <form class="form-horizontal" name="userForm" novalidate>
+        <div class="form-group">
+            <label class="control-label col-md-3">First Name *</label>
+            <div class="col-md-6">
+                <input class="form-control" id="firstName" name="firstName" placeholder="First Name" ng-model="vm.employee.firstName" required />
+                <p class="text-danger"
+                   ng-show="userForm.firstName.$error.required && (userForm.firstName.$dirty || userForm.firstName.$touched)" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Last Name *</label>
+            <div class="col-md-6">
+                <input class="form-control" id="lastName" name="lastName" placeholder="Last Name" ng-model="vm.employee.lastName" required />
+                <p class="text-danger"
+                   ng-show="userForm.lastName.$error.required && (userForm.lastName.$dirty || userForm.lastName.$touched)" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Phone Number *</label>
+            <div class="col-md-6">
+                <input class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Phone Number" ng-model="vm.employee.phoneNumber" required />
+                <p class="text-danger" ng-show="userForm.phoneNumber.$error.required && (userForm.phoneNumber.$dirty || userForm.phoneNumber.$touched)" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Gender *</label>
+            <div class="col-md-6">
+                <select class="form-control" id="UserGender" name="UserGender" ng-model="vm.employee.gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Email *</label>
+            <div class="col-md-6">
+                <input type="email" class="form-control" id="email" name="email" placeholder="Email" ng-model="vm.employee.email" required />
+                <p class="text-danger" ng-show="userForm.email.$error.required && userForm.email.$dirty" ng-cloak>Required</p>
+                <p class="text-danger" ng-show="userForm.$error.email && (userForm.email.$dirty || userForm.email.$touched)" ng-cloak>Invalid format</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Date of Birth</label>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="dob" id="dob" uib-datepicker-popup="dd/MM/yyyy" readonly
+                           ng-model="vm.employee.dob" is-open="vm.isDobOpen" placeholder="dd/mm/yyyy" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.isDobOpen = !vm.isDobOpen"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Username *</label>
+            <div class="col-md-6">
+                <input class="form-control" id="UserName" name="userName" placeholder="Username" ng-model="vm.employee.userName" required />
+                <p class="text-danger"
+                   ng-show="userForm.userName.$error.required && (userForm.userName.$dirty || userForm.userName.$touched)" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Password *</label>
+            <div class="col-md-6">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" ng-model="vm.employee.password" required />
+                <p class="text-danger"
+                   ng-show="userForm.password.$error.required && (userForm.password.$dirty || userForm.password.$touched)" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Confirm Password *</label>
+            <div class="col-md-6">
+                <input type="password" class="form-control" id="repeatPassword" name="repeatPassword" placeholder="Confirm Password" ng-model="vm.employee.repeatPassword" equal="{{vm.employee.password}}" ng-required="vm.employee.password" />
+                <p class="text-danger" ng-show="userForm.repeatPassword.$error.required && userForm.repeatPassword.$touched" ng-cloak>Required</p>
+                <p class="text-danger" ng-show="userForm.repeatPassword.$error.equal && userForm.repeatPassword.$dirty" ng-cloak>Do not match</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">National Insurance Number *</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="nin" name="nin" placeholder="National Insurance Number" required
+                       ng-model="vm.employee.nin" />
+                <p class="text-danger" ng-show="userForm.nin.$error.required && userForm.nin.$touched" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Start Date *</label>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="startDate" id="startDate" uib-datepicker-popup="dd/MM/yyyy" placeholder="dd/mm/yyyy"
+                           ng-model="vm.employee.startDate" is-open="vm.isStartDateOpen" required readonly />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.isStartDateOpen = !vm.isStartDateOpen"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+                <p class="text-danger"
+                   ng-show="userForm.startDate.$error.required && (userForm.startDate.$dirty || userForm.startDate.$touched)" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">End Date</label>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="endDate" id="endDate" uib-datepicker-popup="dd/MM/yyyy" placeholder="dd/mm/yyyy"
+                           ng-model="vm.employee.endDate" is-open="vm.isEndDateOpen" readonly />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.isEndDateOpen = !vm.isEndDateOpen"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Holiday Allowance *</label>
+            <div class="col-md-6">
+                <input type="number" class="form-control" id="holidays" name="holidays" placeholder="Holiday Allowance" ng-model="vm.employee.holidayAllowance" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Barcode on ID card *</label>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="barcode" name="barcode" placeholder="Barcode" ng-model="vm.employee.barcode" required />
+                <p class="text-danger"
+                   ng-show="userForm.barcode.$error.required && (userForm.barcode.$dirty || userForm.barcode.$dirty)" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Hours required in a week *</label>
+            <div class="col-md-6">
+                <input type="number" class="form-control" id="hoursRequired" name="hoursRequired" placeholder="Weekly Hours" ng-model="vm.employee.hoursRequired" required />
+                <p class="text-danger"
+                   ng-show="userForm.hoursRequired.$error.required && (userForm.hoursRequired.$dirty || userForm.hoursRequired.$touched)" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <fieldset id="workingDays">
+            <legend>Working Days</legend>
+            <div class="col-md-9 col-md-offset-3 col-xs-12 col-xs-offset-0">
+                <table class="table table-responsive table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Day</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="workingDay in vm.employee.workingDays">
+                            <td>
+                                <input type="checkbox" ng-model="workingDay.isAssigned" ng-change="workingDay.selectedOption = null" />
+                            </td>
+                            <td>
+                                {{workingDay.day}}
+                            </td>
+                            <td>
+                                <div uib-timepicker ng-model="workingDay.startTime"
+                                     name="openingTime{{$index}}" id="startTime{{$index}}"
+                                     hour-step="1" minute-step="5" show-meridian="false"
+                                     ng-disabled="!workingDay.isAssigned"></div>
+                            </td>
+                            <td>
+                                <div uib-timepicker ng-model="workingDay.endTime"
+                                     name="closingTime{{$index}}" id="endTime{{$index}}"
+                                     hour-step="1" minute-step="5"
+                                     show-meridian="false" ng-disabled="!workingDay.isAssigned"
+                                     min="openingHours.openingTime" ng-text-change="hoursOnRota()"></div>
+                            </td>
+                            <td>
+                                <select class="form-control" id="assignedDepartment{{$index}}" name="assignedDepartment{{$index}}"
+                                        ng-model="workingDay.selectedOption"
+                                        ng-options="department.name for department in vm.departments track by department.id"
+                                        ng-change="workingDay.departmentId = workingDay.selectedOption.id"
+                                        ng-required="workingDay.isAssigned"
+                                        ng-disabled="!workingDay.isAssigned"></select>
+                                <p class="text-danger" ng-show="userForm.assignedDepartment{{$index}}.$error.required" ng-cloak>Required</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+
+        <div class="form-group">
+            <label class="control-label col-md-3">Primary Business Role * </label>
+            <div class="col-md-6">
+                <select class="form-control" id="primaryBusinessRole" name="primaryBusinessRole"
+                        ng-model="vm.employee.primaryBusinessRole"
+                        ng-options="businessRole.name for businessRole in vm.roles track by businessRole.roleId"></select>
+                <p class="text-danger" ng-show="userForm.primaryBusinessRole.$error.required" ng-cloak>Required</p>
+            </div>
+        </div>
+
+        <fieldset>
+            <legend>Secondary Business Role(s)</legend>
+            <div class="col-xs-9 col-md-push-3" ng-repeat="role in vm.roles" ng-cloak>
+                <div class="form-group pull-left">
+                    <input type="checkbox" ng-model="role.isChecked" />
+                    {{ role.name }}
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="text-right">
+            <button class="btn btn-info" ng-disabled="userForm.$invalid || vm.isBusy" ng-click="vm.create()">
+                {{ vm.isBusy ? "Creating..." : "Create" }}
+            </button>
+        </div>
+        <div>
+            {{ userForm.$error }}
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>aspnet-StaffPortal_2017-21BC6826-8361-412D-B169-D9CAD0E195E5</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\js\Services\**" />
+    <Content Remove="wwwroot\js\Services\**" />
+    <EmbeddedResource Remove="wwwroot\js\Services\**" />
+    <None Remove="wwwroot\js\Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\EmailTemplates\LeaveRequest.html" />
+    <Content Remove="wwwroot\EmailTemplates\LeaveRequest_Reply.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Extensions\EmailSenderExtensions.cs.old" />
+  </ItemGroup>
+
+  <!--<ItemGroup>
+    <Compile Include="Data\ApplicationDbContext.cs" />
+  </ItemGroup>-->
+
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="7.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="Less.js" Version="1.5.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" PrivateAssets="All" />
+    <PackageReference Include="Serilog" Version="2.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\EmailTemplates\LeaveRequest_Reply.html" />
+    <None Include="wwwroot\EmailTemplates\LeaveRequest.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StaffPortal.Common\StaffPortal.Common.csproj" />
+    <ProjectReference Include="..\StaffPortal.Data\StaffPortal.Data.csproj" />
+    <ProjectReference Include="..\StaffPortal.Service\StaffPortal.Service.csproj" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JSONSchema="http://json.schemastore.org/config" /></VisualStudio></ProjectExtensions>
+
+</Project>

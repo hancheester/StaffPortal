@@ -1,0 +1,33 @@
+﻿<div class="panel panel-default" draggable="false">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{vm.title}}</h3>
+    </div>
+    <div class="panel-body">
+        <wait-cursor ng-show="vm.isBusy"></wait-cursor>
+        <div class="panel panel-default" ng-repeat-start="leave in vm.leaveRequests">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{leave.type}}</h3>
+            </div>
+            <div class="panel-body">
+                <span ng-show="leave.isEmergency" class="label label-danger">Emergency</span>
+                
+                <div class="row" ng-cloak ng-repeat="date in leave.requestedDates">
+                    <div class="col-sm-4 small">
+                        {{date.date}}
+                    </div>                    
+                    <div class="col-sm-4 small">
+                        {{date.department}}
+                    </div>
+                    <div class="col-sm-4 small">
+                        {{date.status}} <i ng-show="data.reason" uib-popover="{{date.reason}}" popover-trigger="'mouseenter'" class="fa fa-comment" aria-hidden="true"></i>
+                    </div>                    
+                </div>
+            </div>
+            <div class="panel-footer">
+                Requested On: {{leave.requestedOn}}
+                <span class="pull-right label label-default">{{leave.overallStatus}}</span>
+            </div>
+        </div>
+        <div ng-repeat-end class="space20"></div>
+    </div>
+</div>

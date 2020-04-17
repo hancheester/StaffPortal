@@ -1,0 +1,35 @@
+﻿<div class="checkbox">
+    <ul class="list-unstyled">
+        <li class="col-xs-3" ng-repeat="month in months" ng-if="$index % 3 == 0">
+            <label class="chk-container ng-binding">
+                <input type="checkbox" for="property.name" ng-model="month.isAccruable">
+                <span class="checkmark"></span>
+                {{ month.name }}
+            </label>
+        </li>
+    </ul>
+</div>
+
+<div class="checkbox">
+    <ul class="list-unstyled">
+        <li class="col-xs-3" ng-repeat="month in months" ng-if="$index % 3 == 1">
+            <label class="chk-container ng-binding">
+                <input type="checkbox" for="property.name" ng-model="month.isAccruable">
+                <span class="checkmark"></span>
+                {{ month.name }}
+            </label>
+        </li>
+    </ul>
+</div>
+
+<div class="checkbox">
+    <ul class="list-unstyled">
+        <li class="col-xs-3" ng-repeat="month in months" ng-if="$index % 3 == 2">
+            <label class="chk-container ng-binding">
+                <input type="checkbox" for="property.name" ng-model="month.isAccruable">
+                <span class="checkmark"></span>
+                {{ month.name }}
+            </label>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,50 @@
+﻿<html>
+<head>
+    <style>
+        body.body {
+            width: 640px;
+            font-family: Lato;
+            font-size: 14px;
+            border: 1px solid #eaeaea;
+            padding: 20px;
+        }
+
+        p {
+            line-height: 150%;
+        }
+
+        .details-table {
+            border: 1px solid rgba(0, 139, 139, 0.2);
+        }
+
+        .td-header {
+            background-color: rgba(0, 139, 139, 0.2);
+            color: rgba(0, 139, 139, 0.7);
+        }
+    </style>
+
+</head>
+<body class="body">
+    <h3>Staff Portal - Leave Request Confirmation as @@BusinessRoleName</h3>
+    <p>
+        Hi @@FirstName @@LastName - @@BusinessRoleName,<br />
+        You are receiving this email to let you know a new leave request has been created.
+    </p>
+
+    <h4>Leave Request Details:</h4>
+
+    <table class="details-table" width="640" cellpadding="5" cellspacing="0">
+        <tr>
+            <td class="td-header"><font size="-1"><b>Customer</b></font></td>
+            <td class="td-header"><font size="-1"><b>Service</b></font></td>
+            <td class="td-header"><font size="-1"><b>Date</b></font></td>
+        </tr>
+        <tr>
+            <td width="302" valign="top">@@ApplicantName</td>
+            <td width="255" valign="top">@@LeaveTypeName</td>
+            <td width="220" valign="top">@@RequestedDateTime</td>
+        </tr>
+    </table>
+
+</body>
+</html>

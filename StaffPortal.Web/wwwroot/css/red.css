@@ -1,0 +1,33 @@
+﻿.main-color {
+  background-color: #35588d;
+}
+.darker-main {
+  background-color: #192a43;
+}
+.saturated-main {
+  background-color: #19539f;
+}
+.smooth-main {
+  background-color: #5aa1e7;
+}
+.light-main {
+  background-color: #80bbff;
+}
+.smooth-smain {
+  background-color: #0080db;
+}
+.light-smain {
+  background-color: #0590d6;
+}
+div.color {
+  width: 100%;
+  padding: 20px;
+  font-weight: 700;
+  font-size: 22px;
+  color: #c6c6c6;
+}
+/*
+    .critical - below department minimum staff level or mininum required role is zero
+    .decent - minimum required role is zero but above department mininum staff level
+    .acceptable - none of the above
+*/

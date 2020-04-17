@@ -1,0 +1,195 @@
+﻿@{
+    ViewData["Title"] = "Timesheet";
+}
+
+@section scripts {
+    <script src="~/js/Admin/admin-app.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload-shim.min.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/js/Admin/controllers/timesheetCtrl.js" asp-append-version="true"></script>
+    <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/lib/angular-notify/angular-notify.js"></script>
+}
+
+@section styles {
+    <link href="~/lib/angular-notify/angular-notify.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
+}
+
+<div ng-app="admin-app" ng-controller="timesheetCtrl">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Timesheet</h2>
+                <div class="row space30">
+                    <label class="control-label col-sm-1">Date</label>
+                    <div class="col-sm-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="requestedDate" id="requestedDate" uib-datepicker-popup="{{format}}"
+                                   ng-model="requestedDate" is-open="popupRequestedDate.opened" datepicker-options="options"
+                                   ng-change="getTimesheet()"
+                                   close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="openDate(popupRequestedDate)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <label class="control-label col-sm-1 text-right">Department: </label>
+                    <div class="col-sm-3">
+                        <select class="form-control form_control_txt" id="selectedDepartment" name="selectedDepartment"
+                                ng-model="selectedDepartment"
+                                ng-options="department.name for department in departments track by department.id"
+                                ng-change="filterTimesheet()"
+                                ng-disabled="departments <= 1"></select>
+                    </div>
+
+                    <label class="control-label col-sm-1 text-right">Role: </label>
+                    <div class="col-sm-3">
+                        <select class="form-control form_control_txt" id="selectedRole" name="selectedRole"
+                                ng-model="selectedRole"
+                                ng-options="role.name for role in businessRoles track by role.id"
+                                ng-change="filterTimesheet()"
+                                ng-disabled="businessRoles <= 1"></select>
+                    </div>
+                </div>
+
+                <div class="space20"></div>
+                <div class="table-responsive">
+                    <table class="table table-responsive table-body-striped table_admin">
+                        <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Clock In</th>
+                                <th>Clock Out</th>
+                                <th>Total Time</th>
+                                <th>Role</th>
+                                <th>Department</th>
+                                <th>Report</th>
+                                <th>Approved?</th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="timesheetDetail in timesheet | startFrom: (currentPage - 1) * pageSize | limitTo: pageSize">
+                            <tr>
+                                <td><p class="p_medic">{{ timesheetDetail.item1.firstName }} {{ timesheetDetail.item1.lastName }} </p></td>
+                                <td>
+                                    <a class="pull-right pad-r5" data-toggle="modal" data-target="#editTimesheet" ng-click="selectTimesheetDetails(timesheetDetail.item1)">
+                                        <p class="p_medic" ng-show="timesheetDetail.item1.isClockIn === true">{{ timesheetDetail.item1.timestamp | date: 'dd MMM yyyy - HH:mm' }}</p>
+                                    </a>
+                                </td>
+                                <td>@* Clockout Details *@</td>
+
+                                <td></td>
+                                <td><p class="p_medic">{{ timesheetDetail.item1.businessRoleName }}</p></td>
+                                <td><p class="p_medic">{{ timesheetDetail.item1.departmentName }} </p></td>
+                                <td>
+                                    <button uib-popover-template="shiftPopover.templateUrl" popover-title="{{shiftPopover.title}}" type="button" class="btn btn-default">Popover</button>
+                                    <button class="btn btn-default" ng->Shift</button>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2 checkbox-container ng-cloak">
+                                        <div class="checkbox">
+                                            <label class="chk-container">
+                                                <input type="checkbox" ng-model="timesheetDetail.item1.isApproved" ng-change="timeclockToApprove(timesheetDetail.item1)" />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>@* Employee Name *@</td>
+                                <td>@* Clockin Details *@</td>
+                                <td>
+                                    <a class="pull-right pad-r5" data-toggle="modal" data-target="#editTimesheet" ng-click="selectTimesheetDetails(timesheetDetail.item2)">
+                                        <p class="p_medic" ng-show="timesheetDetail.item2.isClockIn === false">{{ timesheetDetail.item2.timestamp | date: 'dd MMM yyyy - HH:mm' }}</p>
+                                    </a>
+                                </td>
+
+                                <td><p class="p_medic" ng-show="timesheetDetail.item2.isClockIn === false">{{ diff_minutes(timesheetDetail.item1.timestamp, timesheetDetail.item2.timestamp) }}</p></td>
+                                <td><p class="p_medic">{{ timesheetDetail.item2.businessRoleName }}</p></td>
+                                <td><p class="p_medic">{{ timesheetDetail.item2.departmentName }} </p></td>
+                                <td>
+                                    <button uib-popover-template="shiftPopover.templateUrl" popover-title="{{shiftPopover.title}}" type="button" class="btn btn-default">Popover</button>
+                                    <button class="btn btn-default" ng->Shift</button>
+                                </td>
+                                <td>
+                                    <div class="col-sm-2 checkbox-container ng-cloak">
+                                        <div class="checkbox">
+                                            <label class="chk-container">
+                                                <input type="checkbox" ng-model="timesheetDetail.item2.isApproved" ng-change="timeclockToApprove(timesheetDetail.item2)" />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                    <div class="row">
+                        <div class="col-md-3 pull-right">
+                            <div class="form-group">
+                                <button class="btn btn-info" ng-click="approveTimesheet()" ng-disabled="timesheetToApprove.length <= 0">Approve Timesheet</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                        boundary-link-numbers="true" rotate="false" previous-text="Prev"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EDIT TIMESHEET DETAILS -->
+    <div id="editTimesheet" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Timesheet</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" name="selectedtsdForm" novalidate role="form">
+                        <div class="form-group" ng-class="{ 'has-error' : selectedtsdForm.businessRole.$error.required && (selectedtsdForm.businessRole.$dirty || selectedtsdForm.businessRole.$touched) }">
+                            <label class="control-label col-sm-5">Employee Name:</label>
+                            <div class="col-sm-7">
+                                <h5><strong class="sp-strong">{{selectedtsd.firstName}} {{selectedtsd.lastName}}</strong></h5>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-5">Date</label>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="tsdDate" id="tsdDate" uib-datepicker-popup="{{format}}"
+                                           ng-model="selectedtsd.timestamp" is-open="popupTsdDate.opened" datepicker-options="datePickerOptions"
+                                           close-text="Close" alt-input-formats="altInputFormats" show-button-bar="false" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="openDate(popupTsdDate)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-5">Time</label>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                    <div uib-timepicker ng-model="selectedtsd.timestamp" hour-step="hstep"
+                                         ng-change="timeChanged($index, workingDay)"
+                                         minute-step="mstep" show-meridian="ismeridian"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="editTimesheet(selectedtsd)">Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

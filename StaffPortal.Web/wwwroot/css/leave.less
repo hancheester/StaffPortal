@@ -1,0 +1,163 @@
+﻿@import "colors.less";
+@import "mixins.less";
+
+.btn-chroma(@color) {
+    background-color: @color;
+    border-color: @color;
+    color: white;
+}
+
+.pending-requests {
+    .panel {
+        border: 2px solid #cfdef2;
+        margin-bottom: 10px;
+        border-radius: 0;
+
+        &.critical {
+            border-color: @critical;
+        }
+
+        &.decent {
+            border-color: @decent;
+        }
+
+        &.acceptable {
+            border-color: @acceptable;
+        }
+
+        &:after {
+            display: table;
+            content: " ";
+            padding: 2px;
+            background-color: #eeeeee;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        > .panel-body {
+            > .leave-type {
+                &:before {
+                    .fontawesome('\f05a', inherit, 0, 5px);
+                    font-size: 22px;
+                }
+            }
+        }
+
+        &.panel-primary {
+            .box-shadow(0, 30px, 45px, -10px, darken(@muted-color, 20%));
+
+            .panel-heading {
+                background-color: tint(@panel-heading, 50%);
+                border: 0;
+            }
+
+            .panel-body *,
+            .panel-footer * {
+                color: tint(@text, 50%);
+            }
+
+            > .panel-body {
+                > .leave-type {
+                    color: tint(@panel-heading, 50%);
+                }
+            }
+
+            .panel-footer {
+                .btn-success {
+                    background-color: tint(@success, 50%);
+                    border-color: tint(@success, 50%);
+                }
+
+                .btn-danger {
+                    background-color: tint(@danger, 50%);
+                    border-color: tint(@danger, 50%);
+                }
+            }
+
+            &.active {
+
+                .panel-heading {
+                    background-color: transparent;
+
+                    .panel-title {
+                        color: @light-smain;
+
+                        .title-line {
+                            position: relative;
+                            width: 100%;
+                            transform: matrix(1, 0, 0, 1, 0, 0);
+                            bottom: 0;
+                            top: 5px;
+                            height: 1px;
+                            background-color: #333;
+                        }
+                    }
+                }
+
+                > .panel-body {
+                    > .leave-type {
+                        color: @panel-heading;
+                    }
+                }
+
+                .panel-footer {
+                    .btn-success {
+                        .btn-chroma(@success);
+                    }
+
+                    .btn-danger {
+                        .btn-chroma(@danger);
+                    }
+
+                    .btn-primary {
+                        color: white;
+                    }
+
+                    .btn.btn-info {
+                        width: auto;
+                        letter-spacing: 2px;
+                        color: white;
+                        font-weight: 100;
+                        padding: 5px 15px;
+                    }
+                }
+            }
+        }
+
+        &.panel-danger {
+            border-color: tint(@danger, 10%);
+
+            > .panel-body {
+                > .leave-type {
+                    color: tint(@danger, 10%);
+                }
+            }
+
+            .panel-heading {
+                background-color: tint(@danger-highlight, 20%);
+
+                .panel-title {
+                    color: white;
+                }
+            }
+
+            &.active {
+                border-color: saturate(@danger, 10%);
+
+                > .panel-body {
+                    > .leave-type {
+                        color: @danger-highlight;
+                    }
+                }
+
+                .panel-heading {
+                    background-color: saturate(@danger-highlight, 20%);
+
+                    .panel-title {
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}

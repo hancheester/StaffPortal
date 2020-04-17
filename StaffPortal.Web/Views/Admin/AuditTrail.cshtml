@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Audit Trail";
+}
+
+@section scripts {
+    <script src="~/lib/ng-file-upload/ng-file-upload-shim.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+    <script src="~/js/Admin/admin-app.js"></script>
+    <script src="~/js/Admin/controllers/auditTrailCtrl.js" asp-append-version="true"></script>
+}
+
+<div class="row" ng-app="admin-app">
+    <div class="col-md-12" ng-controller="auditTrailCtrl">
+
+        <div class="space20"></div>
+        <div class="table-responsive">
+            <table class="table table-responsive table-striped table_admin">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Event</th>
+                        <th>Details</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" ng-model="query.userName" /></td>
+                        <td><input type="text" ng-model="query.event" /></td>
+                        <td><input type="text" ng-model="query.details" /></td>
+                        <td><input type="text" ng-model="query.date" /></td>
+                        <td colspan="2">
+                            <div class="action-btns">
+                                <button ng-click="clearSearchFields()" class="btn btn-danger" type="button"><i class="fa fa-remove" aria-hidden="true"></i></button>
+
+                                <div class="input-group pull-right">
+                                    <button class="btn btn-default" placeholder="Customer Name" ng-click="searchUser()">Search</button>
+                                    <span class="input-group-btn">
+                                        <button ng-click="searchUser(query)" class="btn btn-default" type="button"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr ng-repeat="auditTrail in auditTrails">
+                        <td><p class="p_medic">{{ auditTrail.username }}</p></td>
+                        <td><p class="p_medic">{{ auditTrail.event }}</p></td>
+                        <td><p class="p_medic">{{ auditTrail.details }}</p></td>
+                        <td><p class="p_medic">{{ auditTrail.dateTimeCreated }} </p><p class="text-muted">({{ user.IsEmailVerified }})</p> </td>
+                        <td>
+                            <div class="input-group pull-right">
+                                <a ng-href="#!/editor/{{user.id}}" class="btn btn-default" placeholder="Customer Name">Edit</a>
+                                <span class="input-group-btn">
+                                    <a ng-href="#!/editor/{{user.id}}" ng-click="searchUser(query)" class="btn btn-default"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- Modal HTML -->
+
+            <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                boundary-link-numbers="true" rotate="false" previous-text="Prev" ng-change="pageChanged()"></ul>
+        </div>
+
+    </div>
+</div>

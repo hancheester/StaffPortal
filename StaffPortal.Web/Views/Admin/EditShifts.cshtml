@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Edit Staff Shifts";
+}
+
+@section Styles {
+    <link href="~/css/calendar.min.css" rel="stylesheet" />
+    <link href="~/lib/angular-notify/angular-notify.css" rel="stylesheet" />
+}
+
+@section Scripts{
+    <script src="~/lib/chart.js/dist/Chart.min.js"></script>
+    <script src="~/lib/angular-chart.js/dist/angular-chart.min.js"></script>
+    <script src="~/js/Manage/manage-app.js"></script>
+    <script src="~/js/Manage/controllers/editShiftsCtrl.js" asp-append-version="true"></script>
+    <script src="~/js/Manage/directives/editShiftDirective.js" asp-append-version="true"></script>
+}
+
+<div class="container" ng-app="manage-app" ng-controller="editShiftsCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Edit Shifts</h2>
+        </div>
+    </div>
+    <div class="row space30">
+        <label class="control-label col-sm-2 text-right">Department: </label>
+        <div class="col-sm-3">
+            <select class="form-control form_control_txt" id="selectedDepartment" name="selectedDepartment"
+                    ng-model="selectedDepartment"
+                    ng-options="department.name for department in departments track by department.id"
+                    ng-change="filterRota()"
+                    ng-disabled="departments <= 1"></select>
+        </div>
+
+        <label class="control-label col-sm-1 text-right">Role: </label>
+        <div class="col-sm-3">
+            <select class="form-control form_control_txt" id="selectedRole" name="selectedRole"
+                    ng-model="selectedRole"
+                    ng-options="role.name for role in businessRoles track by role.id"
+                    ng-change="filterRota()"
+                    ng-disabled="businessRoles <= 1"></select>
+        </div>
+    </div>
+    <div class="row space30">
+        <edit-shift ng-model="requestedDays" view="'week'" week="calendarCoded" timeout="!isBusy"
+                    data="rota"
+                    days-working="employee.daysWorking"
+                    leave-days="leaveDays"
+                    selected-department="selectedDepartment"
+                    date="calendarDate",
+                    next-click="getWeek(date)"
+                    previous-click="getWeek(date)"
+                    is-busy="isBusy"></edit-shift>
+    </div>
+
+</div>

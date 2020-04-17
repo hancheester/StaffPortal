@@ -1,0 +1,120 @@
+﻿@{
+    ViewData["Title"] = "Business Roles";
+}
+
+@section scripts{
+    <script src="~/lib/angular-route/angular-route.min.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload-shim.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+    <script src="~/js/Admin/admin-app.js"></script>
+    <script src="~/js/Admin/Controllers/businessRolesCtrl.js" asp-append-version="true"></script>
+    <script src="~/js/Admin/Directives/sideMenu.js" asp-append-version="true"></script>
+    <script src="~/js/Admin/Directives/subMenu.js" asp-append-version="true"></script>
+    <script src="~/js/Admin/Directives/propertiesList.js" asp-append-version="true"></script>
+    <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/lib/angular-notify/angular-notify.js"></script>
+}
+
+@section Styles {
+    <link href="~/lib/angular-notify/angular-notify.css" rel="stylesheet" />
+}
+
+<section ng-app="admin-app" ng-cloak>
+    <div class="container" ng-controller="businessRolesCtrl">
+        <div class="row">
+            <div class="col-md-4">
+                <side-menu items="businessRolesHierarchy" ng-cloak></side-menu>
+            </div>
+
+            <div class="col-md-8">
+                <div class="row">
+                    <form class="form-horizontal" name="businessRoleForm" novalidate role="form">
+                        <div class="col-sm-8 col-sm-push-4">
+                            <div class="form-group" ng-class="{ 'has-error' : businessRoleForm.name.$error.required && businessRoleForm.name.$dirty }" ng-cloak>
+                                <label class="label-bordered col-sm-4 bg-white">Name</label>
+                                <div class="col-sm-8 no-padding">
+                                    <input class="form-control border-radius-0" id="name" name="name" placeholder="Business Role" ng-model="newBusinessRole.name" required />
+                                    <p class="text-danger" ng-show="businessRoleForm.name.$error.required && businessRoleForm.name.$dirty" ng-cloak>Business Role Name is required</p>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-class="{ 'has-error' : businessRoleForm.businessRoleSelect.$error.required && businessRoleForm.businessRoleSelect.$dirty }" ng-cloak>
+                                <label class="label-bordered col-sm-4 bg-white">Parent Role</label>
+                                <div class="col-sm-8 no-padding">
+                                    <select class="form-control form_control_txt txt_italic border-radius-0" id="businessRoleSelect" name="businessRoleSelect" ng-model="newBusinessRole.parentBusinessRoleId">
+                                        <option ng-repeat="businessRole in businessRoles" value="{{businessRole.id}}">{{businessRole.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 col-sm-pull-8">
+                            <div class="form-group">
+                                <button ng-disabled="businessRoleForm.$invalid" ng-click="createNewRole()" class="btn btn-create">Create New Role</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row listing listing-striped">
+                    <div class="listing-title">
+                        <h4>Edit Permissions for: <strong class="sp-strong">{{selectedRole.name}}</strong></h4>
+                    </div>
+                    <div class="form-group">
+                        <label class="label-bordered col-sm-4 bg-white">Parent Role</label>
+                        <div class="col-sm-8 no-padding">
+                            <select class="form-control form_control_txt txt_italic border-radius-0" id="parentBusinessRole" name="parentBusinessRole"
+                                    ng-model="selectedRole.parentBusinessRole"
+                                    ng-options="businessRole.name for businessRole in businessRoles track by businessRole.id">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="listing-container">
+                        <div class="row listing-header">
+                            <div class="col-sm-5">
+                                <img src="~/images/permissions.png" /> Permissions
+                            </div>
+                            <div class="col-sm-5">
+                                <img src="~/images/notes.png" /> Notes
+                            </div>
+                            <div class="col-sm-2">
+                            </div>
+                        </div>
+
+                        <div class="row listing-row ng-cloak" ng-cloak ng-repeat="permission in appPermissions">
+                            <div class="col-sm-5 listing-row-title">
+                                {{permission.name}}
+                            </div>
+                            <div class="col-sm-5 ng-cloak">
+                                {{permission.description}}
+                            </div>
+                            <div class="col-sm-2 checkbox-container ng-cloak">
+                                <div class="checkbox">
+                                    <label class="chk-container">
+                                        <input type="checkbox" ng-model="permission.isAllowed" ng-change="updatePermission(permission)" />
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" ng-show="errorMessages.length > 0">
+                        <div class="alert alert-danger alert-dismissible col-sm-6">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>ERROR!</strong>
+                            <ul class="list-danger">
+                                <li ng-repeat="errMessage in errorMessages">
+                                    {{errMessage.value}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 pull-right">
+                            <button class="btn btn-info" ng-click="updateBusinessRole()">Save Changes</button>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

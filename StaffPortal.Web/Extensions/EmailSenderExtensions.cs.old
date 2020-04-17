@@ -1,0 +1,20 @@
+using System.Threading.Tasks;
+
+namespace StaffPortal_2017.Web.Services
+{
+    public static class EmailSenderExtensions
+    {
+        public static Task SendEmailConfirmationAsync(this IEmailSender emailSender, string email, string link)
+        {
+            return emailSender.SendEmailAsync(email, "Registration Confirmation email",
+                "Your account has been created and pending for activation");
+        }
+
+        public static Task LeaveRequestConfirmationAsync(this IEmailSender emailSender, string email)
+        {
+            return emailSender.SendEmailAsync(email, "Leave Request Confirmation",
+                "A new leave request has been created.");
+        }
+
+    }
+}

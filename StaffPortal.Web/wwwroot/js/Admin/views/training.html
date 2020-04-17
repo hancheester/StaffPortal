@@ -1,0 +1,57 @@
+﻿<div class="container" ng-controller="trainingCtrl">
+
+    <!-- COMPANY INFO -->
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Training Modules</h2>
+
+            <div class="space20"></div>
+            <div class="table-responsive">
+                <table class="table table-responsive table-striped table_admin">
+                    <thead>
+                        <tr>
+                            <th ng-click="sortBy('name', $event)" class="sort" ng-class="{'reverse' : reverse && propertyName === 'name'}">Name</th>
+                            <th ng-click="sortBy('date', $event)" class="sort" ng-class="{'reverse' : reverse && propertyName === 'date'}">Created On</th>
+                            <th>Location</th>
+                            <th>Invited</th>
+                            <th>Accepted</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="module in trainingModules | startFrom: (currentPage - 1) * pageSize | limitTo: pageSize | orderBy:propertyName:reverse">
+                            <td><p class="p_medic"><a ng-href="#!/editor/{{module.id}}">{{ module.name }}</a></p></td>
+                            <td><p class="p_medic">{{ module.dateCreated | date: 'dd MMM yyyy' }}</p></td>
+                            <td><p class="p_medic">{{ module.location }}</p></td>
+                            <td><p class="p_medic">{{ module.invitationsCount }} </p></td>
+                            <td><p class="p_medic">{{ module.acceptedCount }} </p></td>
+                            <td>
+                                <div class="input-group pull-right">
+                                    <a ng-href="#!/editor/{{module.id}}" class="btn btn-default" placeholder="Customer Name">Edit</a>
+                                    <span class="input-group-btn">
+                                        <a ng-href="#!/editor/{{module.id}}" ng-click="searchUser(query)" class="btn btn-default"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- Modal HTML -->
+
+                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                    boundary-link-numbers="true" rotate="false" previous-text="Prev"></ul>
+            </div>
+
+            <div class="col-sm-4 col-sm-push-8">
+                <div class="input-group pull-right">
+                    <a class="btn btn-info" ng-href="#!/editor/create">Create New Training Module</a>
+                    <span class="input-group-btn">
+                        <a ng-href="#!/editor/create" class="btn btn-info"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

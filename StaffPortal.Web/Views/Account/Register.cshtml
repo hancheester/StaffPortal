@@ -1,0 +1,144 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<link href="~/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link href="~/css/site.css" rel="stylesheet" />
+<link href="~/css/animate.css" rel="stylesheet" />
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HR Pharm - Staff Portal</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+
+    <div class="account">
+        <div id="register" class="container">
+            <div class="middle-box text-center loginscreen animated fadeIn">
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <img class="img-responsive" src="~/images/Logo.png" />
+                        <hr />
+
+                        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                            <h3>Create a new account</h3>
+                            <div class="title-line" style="width: 60%; transform: matrix(1, 0, 0, 1, 0, 0);"></div>
+                            <div class="space30"></div>
+                            <div asp-validation-summary="All" class="text-danger"></div>
+
+                            @* FULLNAME *@
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><img src="~/images/profile_ico.png" /></span>
+                                    <input asp-for="Firstname" class="form-control" placeholder="First Name" />
+                                </div>
+                                <span asp-validation-for="Firstname" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><img src="~/images/profile_ico.png" /></span>
+                                    <input asp-for="Lastname" class="form-control" placeholder="Last Name" />
+                                </div>
+                                <span asp-validation-for="Lastname" class="text-danger"></span>
+                            </div>
+
+                            @* MOBILE NUMBER *@
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><img src="~/images/phone_ico.png" /></span>
+                                    <input asp-for="PhoneNumber" class="form-control" placeholder="Contact Number" />
+                                </div>
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            @* GENDER *@
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><img src="~/images/profile_ico.png" /></span>
+                                    <select asp-for="Gender" class="form-control" placeholder="Contact Number">
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+
+                            @* EMAIL ADDRESS *@
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><img src="~/images/email_ico.png" /></span>
+                                    <input asp-for="Email" class="form-control" placeholder="Email Address" />
+                                </div>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            @* USERNAME *@
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><img src="~/images/profile_ico.png" /></span>
+                                    <input asp-for="Username" class="form-control" placeholder="Username" />
+                                </div>
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                            </div>
+
+
+                            @* PASSWORD *@
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><img src="~/images/psw_ico.png" /></span>
+
+                                    <input asp-for="Password" class="form-control" placeholder="Create Password" />
+                                </div>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><img src="~/images/psw_ico.png" /></span>
+
+                                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
+                                </div>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group pull-left">
+                                <div class="checkbox">
+                                    <label asp-for="TermsAgreed" class="chk-container">
+                                        <input asp-for="TermsAgreed" />
+                                        <span class="checkmark"></span>
+                                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-info">Sign Up</button>
+                        </form>
+                    </div>
+                    <span>Already have an account? <a asp-action="Login">Log in</a></span>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="container text-center space30">
+            <a asp-action="#" class="text-muted">Terms of Service</a> | <a asp-action="#" class="text-muted">Privacy Policy</a>
+        </div>
+    </div>
+</body>
+</html>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/scripts/jQuery/jquery.validate.min.js"></script>
+    <script src="~/scripts/jQuery-Validation-Unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

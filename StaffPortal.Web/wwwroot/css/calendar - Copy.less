@@ -1,0 +1,483 @@
+﻿@import "colors.less";
+@import "mixins.less";
+
+.vertical-centre (@height) {
+    height: @height;
+    line-height: @height !important;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.vertical-centre(@height, @line-height) {
+    height: @height;
+    line-height: @line-height !important;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.border-box {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.fontawesome(@content; @color; @pad-l; @pad-r) {
+    font-family: 'FontAwesome';
+    position: relative;
+    content: @content;
+    color: @color;
+    padding-left: @pad-l;
+    padding-right: @pad-r;
+}
+
+@spacing: 10px;
+@icon-width: 40px;
+@header-height: 40px;
+@border-color: #CCC;
+
+calendar,
+shift,
+edit-shift {
+    float: left;
+    display: block;
+    background: white;
+    width: 100%;
+    margin-bottom: 10px;
+
+    > div.header {
+        float: left;
+        width: 100%;
+        background: @saturated-main;
+        height: @header-height;
+        color: white;
+        margin-bottom: 5px;
+
+        > * {
+            .vertical-centre(@header-height);
+        }
+
+        > i {
+            float: left;
+            width: @icon-width;
+            font-size: 1.125em;
+            font-weight: bold;
+            position: relative;
+            .border-box;
+            padding: 0 @spacing;
+            cursor: pointer;
+        }
+
+        > i.fa-angle-left {
+            text-align: left;
+        }
+
+        > i.fa-angle-right {
+            text-align: right;
+            margin-left: @icon-width*-1;
+        }
+
+        > span {
+            float: left;
+            width: 100%;
+            font-weight: bold;
+            text-transform: uppercase;
+            .border-box;
+            padding-left: @icon-width+@spacing;
+            margin-left: @icon-width*-1;
+            text-align: center;
+            padding-right: @icon-width;
+            color: inherit;
+        }
+    }
+
+    > div.week {
+        float: left;
+        width: 100%;
+
+        &:first-child {
+            border-top: none;
+        }
+
+        > span.day {
+            float: left;
+            color: @saturated-main;
+            // TODO: better solution to calculate the width, considering the margin between days
+            .border-box;
+            font-size: 1.15em;
+            text-align: center;
+            .vertical-centre(60px);
+            cursor: pointer;
+            color: black;
+            font-weight: 700;
+            width: 93%/7;
+            margin: 10px 0.5%;
+
+            &:first-child {
+                border-left: none;
+            }
+
+            &.today {
+                background: #E3F2FF;
+            }
+
+            &.critical {
+                .gradient(@critical);
+            }
+
+            &.decent {
+                .gradient(@decent);
+            }
+
+            &.acceptable {
+                .gradient(@acceptable);
+            }
+
+            &.different-month {
+                .gradient(@muted-color);
+                color: #333;
+            }
+
+            &.selected {
+                .gradient(lighten(@main-color, 15%));
+                color: white;
+            }
+
+            &.disabled {
+                background: @muted-color;
+                cursor: default;
+                color: white;
+            }
+
+            &.isEmergencyRequestable {
+                border-color: @danger;
+                -webkit-box-shadow: inset 0 0 1px rgba(255, 0, 0, .3), 0 0 8px @danger;
+                box-shadow: inset 0 0 1px rgba(255, 0, 0, .3), 0 0 8px @danger;
+                cursor: pointer;
+
+                &.selected {
+                    .gradient(lighten(@main-color, 15%));
+                    color: white;
+                }
+            }
+        }
+
+        &.names > span.day {
+            background: @main-color;
+            color: white;
+            .vertical-centre(30px);
+            font-weight: 100;
+        }
+    }
+
+    &.pending-leave {
+        > div.header {
+            background-color: transparent;
+            color: @light-smain;
+            font-size: 1.85em;
+            letter-spacing: 2px;
+            margin: 20px 0 30px 0;
+        }
+
+        > div.week {
+            &.names {
+                > span.day {
+                    width: 98.6%/7;
+                    margin: 0.1%;
+                    background-color: transparent;
+                    color: @light-smain;
+                    .vertical-centre(30px);
+                    text-align: center;
+                    padding-left: 10px;
+                    text-transform: uppercase;
+                    font-weight: 700;
+                }
+            }
+
+            > span.day {
+                @width: 100%/7;
+                width: 98.6%/7;
+                margin: 0.1%;
+                background-color: transparent;
+                color: @light-smain;
+                .vertical-centre(80px, 30px);
+                text-align: left;
+                padding-left: 10px;
+
+                &:first-child {
+                    border-left: none;
+                }
+
+                &.today {
+                    background: #E3F2FF;
+                }
+
+                &.critical {
+                    .gradient(@critical);
+                }
+
+                &.decent {
+                    .gradient(@decent);
+                }
+
+                &.acceptable {
+                    .gradient(@acceptable);
+                }
+
+                &.different-month {
+                    .gradient(@muted-color);
+                    color: #333;
+                }
+
+                &.selected {
+                    .gradient(lighten(@main-color, 15%));
+                    color: white;
+                }
+
+                &.disabled {
+                    background-color: white;
+                    .gradient(@muted-color);
+                    cursor: default;
+                    color: white;
+                }
+
+                &.isEmergencyRequestable {
+                    border-color: transparent;
+                    -webkit-box-shadow: none;
+                    box-shadow: none;
+
+                    &.selected {
+                        .gradient(lighten(@main-color, 15%));
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}
+
+shift {
+    > div.week {
+        float: left;
+        width: 100%;
+
+
+        > div.day {
+            float: left;
+            width: 100%/9;
+            .border-box;
+            font-size: 1.15em;
+            text-align: center;
+            .vertical-centre(40px);
+            background: white;
+            cursor: pointer;
+            color: @light-smain;
+            font-weight: 700;
+            background-color: tint(@muted-color, 70%);
+        }
+    }
+
+    > div.rota {
+        > div.rota-row {
+            > div.working-day {
+                float: left;
+                width: 100%/9;
+                .border-box;
+                border-left: solid 1px @border-color;
+                font-size: 0.95em;
+                text-align: center;
+                .vertical-centre(50px);
+                background: white;
+                cursor: pointer;
+                color: black;
+                font-weight: 700;
+                background-color: tint(@muted-color, 70%);
+                color: @main-color;
+                border-top: solid 1px @border-color;
+                cursor: auto;
+
+
+                > .notification {
+                    position: relative;
+
+                    > div.triangle {
+                        position: absolute;
+                        cursor: pointer;
+                        width: 0;
+                        height: 0;
+                        z-index: 100;
+                        border-style: solid;
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        border-width: 0 25px 20px 0;
+                        border-color: transparent @danger-highlight transparent transparent;
+                    }
+                }
+            }
+        }
+    }
+}
+
+edit-shift {
+    > div.week {
+        float: left;
+        width: 100%;
+        border-top: solid 1px @border-color;
+
+        > div.day {
+            float: left;
+            width: 100%/8;
+            .border-box;
+            border-left: solid 1px @border-color;
+            font-size: 1.15em;
+            text-align: center;
+            .vertical-centre(40px);
+            background: white;
+            cursor: pointer;
+            color: black;
+            font-weight: 700;
+            background-color: tint(@muted-color, 70%);
+            color: @main-color;
+        }
+    }
+
+    > div.rota {
+        float: left;
+
+        > wait-cursor {
+            position: relative;
+            top: 0;
+            font-size: 40px;
+            color: white;
+        }
+
+        > div.rota-row {
+
+            > div.business-role {
+                float: left;
+                width: 100%/8;
+                .border-box;
+                border-left: solid 2px @main-color;
+                font-size: 1em;
+                text-align: left;
+                padding-left: 10px;
+                .vertical-centre(50px);
+                background: white;
+                cursor: pointer;
+                border-top: 2px solid @border-color;
+                color: black;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                background-color: tint(@main-color, 85%);
+                color: @main-color;
+
+                &:first-child {
+                    .vertical-centre(50px, 25px);
+                    font-size: 1.20em;
+                }
+
+                > p.info {
+                    color: tint(@main-color, 30%);
+                    text-transform: none;
+                    font-size: 12px;
+                }
+
+                > .notification {
+                    position: relative;
+                    font-size: 15px;
+
+                    > div.triangle {
+                        position: absolute;
+                        cursor: pointer;
+                        width: 0;
+                        height: 0;
+                        z-index: 100;
+                        border-style: solid;
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        border-width: 0 25px 20px 0;
+                        border-color: transparent @danger-highlight transparent transparent;
+                    }
+                }
+            }
+
+            > div.week {
+                float: left;
+                width: 100%;
+                border-top: solid 1px @border-color;
+
+                > div.day {
+                    float: left;
+                    width: 100%/8;
+                    .border-box;
+                    border-left: solid 1px @border-color;
+                    font-size: 0.95em;
+                    text-align: center;
+                    .vertical-centre(50px);
+                    background: white;
+                    cursor: pointer;
+                    color: black;
+                    font-weight: 700;
+                    background-color: tint(@muted-color, 70%);
+                    color: @main-color;
+                    border-top: solid 1px @border-color;
+                    cursor: auto;
+
+                    i.fa-pencil {
+                        position: relative;
+                        cursor: pointer;
+
+                        &:hover {
+                            color: tint(@main-color, 50%);
+                        }
+                    }
+
+
+                    &.critical {
+                        .gradient(@critical);
+                    }
+
+                    &.decent {
+                        .gradient(@decent);
+                    }
+
+                    &.acceptable {
+                        .gradient(@acceptable);
+                    }
+
+
+                    > .working-time {
+
+
+                        > i.fa-pencil {
+                            cursor: pointer;
+
+                            &:hover {
+                                color: tint(@main-color, 50%);
+                            }
+                        }
+                    }
+
+                    > .notification {
+                        position: relative;
+
+                        > div.triangle {
+                            position: absolute;
+                            cursor: pointer;
+                            width: 0;
+                            height: 0;
+                            z-index: 100;
+                            border-style: solid;
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            border-width: 0 25px 20px 0;
+                            border-color: transparent @danger-highlight transparent transparent;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

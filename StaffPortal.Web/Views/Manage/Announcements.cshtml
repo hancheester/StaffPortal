@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Announcements";
+}
+
+@section scripts{
+    <script src="~/js/Admin/admin_announcements-app.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload-shim.min.js"></script>
+    <script src="~/lib/ng-file-upload/ng-file-upload.js"></script>
+    <script src="~/js/Admin/admin-app.js"></script>
+    <script src="~/js/Admin/controllers/announcementsCtrl.js" asp-append-version="true"></script>
+    <script src="~/js/Admin/controllers/editAnnouncementCtrl.js" asp-append-version="true"></script>
+    <script src="~/lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/lib/angular-notify/angular-notify.js"></script>
+}
+
+@section Styles {
+    <link href="~/lib/angular-notify/angular-notify.css" rel="stylesheet" />
+}
+
+<section ng-app="admin_announcements-app">
+    <div ng-view></div>
+</section>

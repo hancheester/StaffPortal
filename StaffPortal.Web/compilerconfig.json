@@ -1,0 +1,42 @@
+﻿[
+  {
+    "outputFile": "wwwroot/calendar.css",
+    "inputFile": "wwwroot/calendar.less"
+  },
+  {
+    "outputFile": "wwwroot/css/calendar.css",
+    "inputFile": "wwwroot/css/calendar.less"
+  },
+  {
+    "outputFile": "wwwroot/css/leave.css",
+    "inputFile": "wwwroot/css/leave.less"
+  },
+  {
+    "outputFile": "wwwroot/css/colors.css",
+    "inputFile": "wwwroot/css/colors.less"
+  },
+  {
+    "outputFile": "wwwroot/css/mixins.css",
+    "inputFile": "wwwroot/css/mixins.less"
+  },
+  {
+    "outputFile": "wwwroot/css/site.css",
+    "inputFile": "wwwroot/css/site.less"
+  },
+  {
+    "outputFile": "wwwroot/css/dashboard.css",
+    "inputFile": "wwwroot/css/dashboard.less"
+  },
+  {
+    "outputFile": "wwwroot/js/dashboard/card-my-leave-request.component.css",
+    "inputFile": "wwwroot/js/dashboard/card-my-leave-request.component.less"
+  },
+  {
+    "outputFile": "wwwroot/css/shift.css",
+    "inputFile": "wwwroot/css/shift.less"
+  },
+  {
+    "outputFile": "wwwroot/js/shift/shift.css",
+    "inputFile": "wwwroot/js/shift/shift.less"
+  }
+]

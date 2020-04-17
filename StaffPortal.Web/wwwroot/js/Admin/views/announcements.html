@@ -1,0 +1,55 @@
+﻿<div class="container" ng-controller="announcementsCtrl">
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Announcements</h2>
+
+            <div class="space20"></div>
+            <div class="table-responsive">
+                <table class="table table-responsive table-striped table_admin">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th ng-click="sortBy('date', $event)" class="sort" ng-class="{'reverse' : reverse && propertyName === 'date'}">Date</th>
+                            <th>By</th>
+                            <th>Sent</th>
+                            <th>Acknowledged</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="announcement in announcements | startFrom: (currentPage - 1) * pageSize | limitTo: pageSize | orderBy:propertyName:reverse">
+                            <td><p class="p_medic"><a ng-href="#!/editor/{{announcement.id}}">{{ announcement.title }}</a></p></td>
+                            <td><p class="p_medic">{{ announcement.date | date: 'dd MMM yyyy' }}</p></td>
+                            <td><p class="p_medic">{{ announcement.author }}</p></td>
+                            <td><p class="p_medic">{{ announcement.recipientsCount }}</p></td>
+                            <td><p class="p_medic">{{ announcement.acknowledged }} </p></td>
+                            <td>
+                                <div class="input-group pull-right">
+                                    <a ng-href="#!/editor/{{announcement.id}}" class="btn btn-default" placeholder="Customer Name">Edit</a>
+                                    <span class="input-group-btn">
+                                        <a ng-href="#!/editor/{{announcement.id}}" ng-click="searchUser(query)" class="btn btn-default"><i class="fa fa-edit" aria-hidden="true"></i></a>
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- Modal HTML -->
+
+                <ul uib-pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                    boundary-link-numbers="true" rotate="false" previous-text="Prev"></ul>
+            </div>
+
+            <div class="col-sm-4 col-sm-push-8">
+                <div class="input-group pull-right">
+                    <a class="btn btn-info" ng-href="#!/editor/create">Create New Announcement</a>
+                    <span class="input-group-btn">
+                        <a ng-href="#!/editor/create" class="btn btn-info"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
