@@ -126,7 +126,7 @@
                     notify({
                         message: "Employee created successfully.",
                         duration: -1,
-                        position: "right",
+                        position: "center",
                         classes: "alert-success"
                     });
                 }, function (err) {
@@ -134,7 +134,7 @@
                     notify({
                         message: "Sorry, there is an error. Please contact administrator. " + err.data.value.message,
                         duration: -1,
-                        position: "right",
+                        position: "center",
                         classes: "alert-danger"
                     });
                 })
