@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using StaffPortal.Common;
+using StaffPortal.Common.Models;
 using StaffPortal.Service.Message;
 using StaffPortal.Service.Staff;
 using StaffPortal.Web.Models.AccountViewModels;
@@ -20,13 +23,15 @@ namespace StaffPortal.Web.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly IEmployeeService _employeeService;
-        
+        private readonly IMapper _mapper;
+
         public AccountController(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             IEmailSender emailSender,
             ILogger<AccountController> logger,            
-            IEmployeeService employeeService)
+            IEmployeeService employeeService,
+            IMapper mapper)
 
         {
             _userManager = userManager;
@@ -34,6 +39,7 @@ namespace StaffPortal.Web.Controllers
             _emailSender = emailSender;
             _logger = logger;
             _employeeService = employeeService;
+            _mapper = mapper;
         }
 
         [TempData]
@@ -102,27 +108,23 @@ namespace StaffPortal.Web.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser {
-                    UserName = model.Username,
-                    PhoneNumber = model.PhoneNumber,
-                    Email = model.Email };
+                var employee = new Employee();
+                employee.FirstName = model.Firstname;
+                employee.LastName = model.Lastname;
+                employee.Gender = model.Gender;
+                
+                var result = await _employeeService.Register(employee, model.Username, model.Email, model.PhoneNumber, model.Password, 0, new int[0]);
 
-                // TODO: Eventually Generate a random password and make sure it's sent via email to the user.
-                if (string.IsNullOrEmpty(model.Password))
-                    model.Password = "password";
-
-                var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    _employeeService.CreateEmployee(user.Id);
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     //var registrantEmailModel =  _employeeInfoBLL.ToRegistrationRegistrant(user);
                     //await _emailSender.SendTemplateEmail(registrantEmailModel);
 
-                    await _emailSender.SendEmailAsync(user.Email, "New Registration", "Welcome");
+                    await _emailSender.SendEmailAsync(model.Email, "New Registration", "Welcome");
 
                     var admins = await _userManager.GetUsersInRoleAsync(GlobalConstants.ASPNETORLE_SUPERADMIN);
                     foreach(var admin in admins)
@@ -267,6 +269,11 @@ namespace StaffPortal.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, error.Description);
             }
+        }
+
+        public void AddErrors<T>(OperationResult<T> result)
+        {
+            ModelState.AddModelError(string.Empty, result.ErrorSummary);
         }
 
         private IActionResult RedirectToLocal(string returnUrl)

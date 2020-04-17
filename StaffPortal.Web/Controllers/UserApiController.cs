@@ -38,7 +38,7 @@ namespace StaffPortal.Web.Controllers
                 var primaryRoleId = model.PrimaryBusinessRoleId;
                 var secondaryRoleIds = model.SecondaryBusinessRoleIds;
 
-                var result = await _employeeService.Register(employee, username, email, password, primaryRoleId, secondaryRoleIds);
+                var result = await _employeeService.Register(employee, username, email, password, model.PhoneNumber, primaryRoleId, secondaryRoleIds);
 
                 if (result.Succeeded)
                 {
