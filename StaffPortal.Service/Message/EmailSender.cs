@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Options;
-using StaffPortal.Service.Errors;
-using StaffPortal.Common;
+﻿using StaffPortal.Common;
 using StaffPortal.Common.Settings;
+using StaffPortal.Service.Errors;
 using System;
+using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
@@ -15,31 +15,30 @@ namespace StaffPortal.Service.Message
 
         public EmailSender(
             IErrorService errorService,
-            IOptions<EmailSettings> options)
+            EmailSettings emailSettings)
         {
             _errorService = errorService;
-            _emailSettings = options.Value;
+            _emailSettings = emailSettings;
         }
 
         public Task SendEmailAsync(string to, string subject, string message)
         {
             try
             {
-                MailMessage mailMessage = new MailMessage(_emailSettings.DisplayEmail, to);
+                MailMessage mailMessage = new MailMessage(_emailSettings.FromEmail, to);
 
                 // Assign strings to the message object
                 mailMessage.Subject = subject.ToString();
                 mailMessage.Body = message.ToString();
                 mailMessage.IsBodyHtml = true;
-
                 // Create smtp and send message
                 //if (_env.EnvironmentName == "Development")
-                SmtpClient smtp = new SmtpClient("localhost", 25);
+                //SmtpClient smtp = new SmtpClient("localhost", 25);
 
                 // TODO: On Production Set a proper SMTP CLIENT
-                //SmtpClient smtp = new SmtpClient("auth.smtp.1and1.co.uk");
-                //NetworkCredential nc = new NetworkCredential("noreply@echemist.co.uk", "Ech3m1st_noreply");
-                //smtp.Credentials = nc;
+                SmtpClient smtp = new SmtpClient(_emailSettings.Host);
+                NetworkCredential nc = new NetworkCredential(_emailSettings.UserName, _emailSettings.Password);
+                smtp.Credentials = nc;
 
                 smtp.Send(mailMessage);
             }
