@@ -32,7 +32,6 @@ namespace StaffPortal.Web.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
-            _emailSender = emailSender;
             _logger = logger;
             _employeeService = employeeService;
         }
@@ -131,7 +130,7 @@ namespace StaffPortal.Web.Controllers
                         //var adminEmailModel = _employeeInfoBLL.ToRegistrationAdmin(admin, user.FirstName, user.LastName);
                         //await _emailSender.SendTemplateEmail(adminEmailModel);
 
-                        await _emailSender.SendEmailAsync(admin.Email, "New Registration", "Hello Admin");
+                        await _emailSender.SendEmailAsync(admin.Email, "New Registration", "Hello Admin, there is a new registered user. Please login and activate the user.");
                     }
 
                     //if (user.IsRegistrationConfirmed)
