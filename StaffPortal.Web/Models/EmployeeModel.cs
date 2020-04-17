@@ -36,7 +36,7 @@ namespace StaffPortal.Web.Models
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Compare("Password")]
+        //[Compare("Password")]
         public string RepeatPassword { get; set; }
 
         public int PrimaryBusinessRoleId { get; set; }
