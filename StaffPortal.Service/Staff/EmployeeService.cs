@@ -279,7 +279,7 @@ namespace StaffPortal.Service.Staff
             _employeeRepository.Update(employee);
         }
 
-        public async Task<OperationResult<Employee>> Register(Employee employee, string username, string email, string password, int primaryBusinessRoleId, int[] secondaryBusinessRoleIds)
+        public async Task<OperationResult<Employee>> Register(Employee employee, string username, string email, string phoneNumber, string password, int primaryBusinessRoleId, int[] secondaryBusinessRoleIds)
         {
             var result = new OperationResult<Employee>(employee);
 
@@ -288,7 +288,8 @@ namespace StaffPortal.Service.Staff
                 var user = new IdentityUser
                 {
                     UserName = username,
-                    Email = email
+                    Email = email,
+                    PhoneNumber = phoneNumber
                 };
 
                 var identityResult = await _userManager.CreateAsync(user, password);
@@ -307,33 +308,39 @@ namespace StaffPortal.Service.Staff
                 employee.UserId = user.Id;
                 employee.Id = _employeeRepository.Create(employee);
 
-                foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+                if (employee.WorkingDays != null && employee.WorkingDays.Count > 0)
                 {
-                    var workingDay = employee.WorkingDays.Where(x => x.Day == day.ToString()).FirstOrDefault();
+                    foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+                    {
+                        var workingDay = employee.WorkingDays.Where(x => x.Day == day.ToString()).FirstOrDefault();
 
-                    if (workingDay != null)
-                    {
-                        workingDay.EmployeeId = employee.Id;
-                        _workingDaysRepository.Create(workingDay);
-                    }
-                    else
-                    {
-                        _workingDaysRepository.Create(new WorkingDay
+                        if (workingDay != null)
                         {
-                            EmployeeId = employee.Id,
-                            Day = day.ToString()
-                        });
+                            workingDay.EmployeeId = employee.Id;
+                            _workingDaysRepository.Create(workingDay);
+                        }
+                        else
+                        {
+                            _workingDaysRepository.Create(new WorkingDay
+                            {
+                                EmployeeId = employee.Id,
+                                Day = day.ToString()
+                            });
+                        }
                     }
                 }
 
-                var primaryRole = new Employee_BusinessRole
+                if (primaryBusinessRoleId > 0)
                 {
-                    EmployeeId = employee.Id,
-                    BusinessRoleId = primaryBusinessRoleId,
-                    IsPrimary = true
-                };
+                    var primaryRole = new Employee_BusinessRole
+                    {
+                        EmployeeId = employee.Id,
+                        BusinessRoleId = primaryBusinessRoleId,
+                        IsPrimary = true
+                    };
 
-                _employeeBusinessRoleRepository.Create(primaryRole);
+                    _employeeBusinessRoleRepository.Create(primaryRole);
+                }
 
                 foreach (var roleId in secondaryBusinessRoleIds)
                 {
