@@ -31,11 +31,10 @@
 
                         <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
                             <h3>Create a new account</h3>
-                            <div class="title-line" style="width: 60%; transform: matrix(1, 0, 0, 1, 0, 0);"></div>
                             <div class="space30"></div>
+
                             <div asp-validation-summary="All" class="text-danger"></div>
 
-                            @* FULLNAME *@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><img src="~/images/profile_ico.png" /></span>
@@ -52,7 +51,6 @@
                                 <span asp-validation-for="Lastname" class="text-danger"></span>
                             </div>
 
-                            @* MOBILE NUMBER *@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><img src="~/images/phone_ico.png" /></span>
@@ -61,7 +59,6 @@
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
 
-                            @* GENDER *@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><img src="~/images/profile_ico.png" /></span>
@@ -73,7 +70,6 @@
                                 <span asp-validation-for="Gender" class="text-danger"></span>
                             </div>
 
-                            @* EMAIL ADDRESS *@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><img src="~/images/email_ico.png" /></span>
@@ -82,7 +78,6 @@
                                 <span asp-validation-for="Email" class="text-danger"></span>
                             </div>
 
-                            @* USERNAME *@
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><img src="~/images/profile_ico.png" /></span>
@@ -91,21 +86,17 @@
                                 <span asp-validation-for="Username" class="text-danger"></span>
                             </div>
 
-
-                            @* PASSWORD *@
-
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><img src="~/images/psw_ico.png" /></span>
-
                                     <input asp-for="Password" class="form-control" placeholder="Create Password" />
                                 </div>
                                 <span asp-validation-for="Password" class="text-danger"></span>
                             </div>
+
                             <div class="form-group">
                                 <div class="input-group">
                                     <span class="input-group-addon"><img src="~/images/psw_ico.png" /></span>
-
                                     <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" />
                                 </div>
                                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
