@@ -10,7 +10,7 @@
 
         vm.employees = [];
         vm.currentPage = 1;
-        vm.pageSize = 5;
+        vm.pageSize = 10;
         vm.totalItems = 0;
         vm.query = {};
         vm.isBusy = false;
