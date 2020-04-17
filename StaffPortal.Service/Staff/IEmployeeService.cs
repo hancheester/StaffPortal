@@ -10,7 +10,7 @@ namespace StaffPortal.Service.Staff
 {
     public interface IEmployeeService
     { 
-        Task<OperationResult<Employee>> Register(Employee employee, string username, string email, string password, int primaryBusinessRoleId, int[] secondaryBusinessRoleIds);
+        Task<OperationResult<Employee>> Register(Employee employee, string username, string email, string password, string phoneNumber, int primaryBusinessRoleId, int[] secondaryBusinessRoleIds);
         Task<OperationResult<Employee>> Update(Employee employee, string username, string email, string password, int primaryBusinessRoleId, int[] secondaryBusinessRoleIds);
         Task<OperationResult> UpdateMyAccount(int employeeId, string firstName, string lastName, string phoneNumber, string gender, string nin, string email, string password);
         IList<Employee> GetEmployees(string userId, string firstName, string lastName, string email, out int total, int pageNumber = 1, int pageSize = 10);
