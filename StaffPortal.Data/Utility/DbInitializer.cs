@@ -414,6 +414,8 @@ namespace StaffPortal.Data.Utility
 
                 #endregion END SEED LEAVE TYPES
 
+                #region SEED SETTINGS
+
                 if (!context.Setting.Any(x => x.Name == "CompanySettings.LogoPath"))
                 {
                     context.Setting.Add(new Setting
@@ -424,6 +426,8 @@ namespace StaffPortal.Data.Utility
                     });
                     context.SaveChanges();
                 }
+                
+                #endregion
             }
         }
 
