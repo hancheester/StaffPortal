@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using StaffPortal.Common;
+using StaffPortal.Common.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -412,6 +413,17 @@ namespace StaffPortal.Data.Utility
                 }
 
                 #endregion END SEED LEAVE TYPES
+
+                if (!context.Setting.Any(x => x.Name == "CompanySettings.LogoPath"))
+                {
+                    context.Setting.Add(new Setting
+                    {
+                        Name = "CompanySettings.LogoPath",
+                        OrganizationId = 0,
+                        Value = "/img/0/logo.png"
+                    });
+                    context.SaveChanges();
+                }
             }
         }
 
