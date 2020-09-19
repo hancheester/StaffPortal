@@ -95,20 +95,24 @@ namespace StaffPortal.Data.Utility
                 #endregion SEED EMPLOYEEINFO            
 
                 #region SEED LASTTIMESTAMP_EMPLOYEE
-                var timestamp_registry = new LastTimestamp_Employee[]
-                {
-                new LastTimestamp_Employee{
-                    EmployeeId = staff.Id,
-                    LastTimestampId = 0
-                },
-                new LastTimestamp_Employee
-                {
-                    EmployeeId = manager.Id,
-                    LastTimestampId = 0
-                }
-                };
 
-                context.LastTimestamp_Employee_Registry.AddRange(timestamp_registry);
+                if (!context.LastTimestamp_Employee_Registry.Any())
+                {
+                    var timestamp_registry = new LastTimestamp_Employee[]
+                    {
+                    new LastTimestamp_Employee{
+                        EmployeeId = staff.Id,
+                        LastTimestampId = 0
+                    },
+                    new LastTimestamp_Employee
+                    {
+                        EmployeeId = manager.Id,
+                        LastTimestampId = 0
+                    }
+                    };
+
+                    context.LastTimestamp_Employee_Registry.AddRange(timestamp_registry);
+                }
 
                 #endregion  END LASTTIMESTAMP_EMPLOYEE
 
