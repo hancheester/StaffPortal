@@ -426,7 +426,29 @@ namespace StaffPortal.Data.Utility
                     });
                     context.SaveChanges();
                 }
-                
+
+                if (!context.Setting.Any(x => x.Name == "CompanySettings.FinancialYearStart"))
+                {
+                    context.Setting.Add(new Setting
+                    {
+                        Name = "CompanySettings.LogoPath",
+                        OrganizationId = 0,
+                        Value = "01/04"
+                    });
+                    context.SaveChanges();
+                }
+
+                if (!context.Setting.Any(x => x.Name == "CompanySettings.FinancialYearEnd"))
+                {
+                    context.Setting.Add(new Setting
+                    {
+                        Name = "CompanySettings.LogoPath",
+                        OrganizationId = 0,
+                        Value = "31/03"
+                    });
+                    context.SaveChanges();
+                }
+
                 #endregion
             }
         }
