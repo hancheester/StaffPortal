@@ -38,25 +38,21 @@ namespace StaffPortal
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            _envName = env.EnvironmentName;
-            _logger = loggerFactory.CreateLogger<Startup>();
-            _logger.LogInformation($"ENVIRONMENT NAME: {_envName}");
         }
 
         public IConfiguration Configuration { get; }
-        private string _envName { get; set; }
-        private ILogger _logger;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            _logger.LogError($"ENVIRONMENT NAME: {_envName}");
+            services.AddDbContext<ApplicationDbContext>(
+                options => options.EnableSensitiveDataLogging()
+                                  .UseSqlServer(Configuration["DbConnectionString"]),
+                ServiceLifetime.Scoped);
 
-            ConfigureDatabase(services);
-            
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -79,6 +75,7 @@ namespace StaffPortal
             services.AddScoped<AuditFilter>();
             services.AddScoped<IUserClaimsPrincipalFactory<IdentityUser>, CustomUserClaimsPrincipalFactory>();
 
+            services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddTransient<IBusinessRoleService, BusinessRoleService>();
             services.AddTransient<IPermissionService, PermissionService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
@@ -119,6 +116,8 @@ namespace StaffPortal
             IDbInitializer dbInitializer,
             ILoggerFactory factory)
         {
+            dbInitializer.Initialize();
+
             if (env.IsEnvironment("Development") || env.IsEnvironment("Staging"))
             {
                 app.UseDeveloperExceptionPage();
@@ -138,21 +137,7 @@ namespace StaffPortal
 
             app.UseSession();
 
-            //Disable temporarily for production
-            //dbInitializer.Initialize().Wait();
-
             app.UseMvc(ConfigureRoute);
-        }
-
-        public void ConfigureDatabase(IServiceCollection services)
-        {
-            services.AddDbContext<ApplicationDbContext>(
-                options => options.EnableSensitiveDataLogging()
-                                  .UseSqlServer(Configuration.GetConnectionString(_envName)),
-                ServiceLifetime.Transient);
-
-            // Add Database Initializer
-            services.AddScoped<IDbInitializer, DbInitializer>();
         }
 
         public void ConfigureRoute(IRouteBuilder routeBuilder)

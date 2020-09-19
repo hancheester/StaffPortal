@@ -1,13 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CA7B8CE4-32DB-4246-87A7-79E22430E664}"
-	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StaffPortal.Data", "StaffPortal.Data\StaffPortal.Data.csproj", "{344AC267-A740-49B7-831D-DA3586F96A40}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StaffPortal.Common", "StaffPortal.Common\StaffPortal.Common.csproj", "{DF4B6498-9EB1-4A31-BFCA-B33BE2D8A851}"

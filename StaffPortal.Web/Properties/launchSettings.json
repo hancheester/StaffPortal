@@ -15,8 +15,8 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "StaffPortal_2017": {
-      "commandName": "IIS",
+    "StaffPortal": {
+      "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
